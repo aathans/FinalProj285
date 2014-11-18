@@ -25,8 +25,6 @@ public class Player {
 
     public boolean crashed;
 
-    private int speed;
-
     private int speedX;
 
     private int speedY;
@@ -78,28 +76,30 @@ public class Player {
         yPos = GameLogic.frameHeight - 50;
 
         speedX = 0;
-        speedY = 0;
+        speedY = 2;
     }
 
     public void update(){
+
         if(GameCanvas.keyboardKeyState(KeyEvent.VK_UP) && (yPos > carHeight)){
-            speedY += 10;
-        } else if(yPos < (GameLogic.frameHeight - carHeight)){
-            speedY -= 10;
+            speedY = 4;
+        } else if(GameCanvas.keyboardKeyState(KeyEvent.VK_DOWN)){
+            speedY = 1;
         } else {
-            speedY = 0;
+            speedY = 2;
         }
 
         if(GameCanvas.keyboardKeyState(KeyEvent.VK_RIGHT) && (xPos < GameLogic.frameWidth - carWidth)){
-            speedX += 10;
+            speedX += 1;
         } else if(xPos > carWidth){
-            speedX -= 10;
+            speedX -= 1;
         } else {
             speedX = 0;
         }
 
         xPos += speedX;
         yPos += speedY;
+        score += speedY;
     }
 
     public void Draw(Graphics2D g2d){
@@ -109,6 +109,10 @@ public class Player {
         if(crashed){
             g2d.drawImage(carCrashImage, xPos, yPos, null);
         }
+    }
+
+    public int getSpeedY(){
+        return speedY;
     }
 
 }

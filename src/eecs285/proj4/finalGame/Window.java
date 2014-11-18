@@ -11,7 +11,7 @@ public class Window extends JFrame {
     private Window(){
         this.setTitle("Game Name");
 
-        this.setSize(500,1000);
+        this.setSize(500,750);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
 

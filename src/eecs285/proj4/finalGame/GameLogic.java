@@ -67,7 +67,6 @@ public class GameLogic extends GameCanvas {
 
      try{
          URL menuImagePath = this.getClass().getResource("/images/road.jpg");
-
          menuImage = ImageIO.read(menuImagePath);
      } catch(IOException ex){
          Logger.getLogger(GameLogic.class.getName()).log(Level.SEVERE, null, ex);
@@ -110,7 +109,7 @@ public class GameLogic extends GameCanvas {
                     break;
                 case PLAYING:
                     elapsedTime += System.nanoTime() - prevTime;
-                    game.updateGame(elapsedTime, mousePos());
+                    game.updateGame();
                     prevTime = System.nanoTime();
                     break;
                 case ENDED:
@@ -144,14 +143,15 @@ public class GameLogic extends GameCanvas {
             case MENU:
                 g2d.drawImage(menuImage, 0, 0, frameWidth, frameHeight, null);
                 g2d.setColor(Color.white);
+                g2d.drawString("Press any key to start", GameLogic.frameWidth/2 - 70, GameLogic.frameHeight/2);
                 break;
             case OPTIONS:
                 break;
             case PLAYING:
-                game.Draw(g2d, mousePos());
+                game.Draw(g2d);
                 break;
             case ENDED:
-                game.DrawEnd(g2d, mousePos());
+                game.DrawEnd(g2d);
                 break;
             case CRASHED:
                 break;

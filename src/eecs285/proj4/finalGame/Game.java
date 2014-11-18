@@ -19,8 +19,6 @@ public class Game {
 
     private Player playerOne;
 
-    private Road road;
-
     private BufferedImage background;
 
     private BufferedImage[] leftLines;
@@ -29,6 +27,9 @@ public class Game {
 
     private int lineHeight;
     private int lineWidth;
+    private int lineTop;
+
+    private int lineSpeed;
 
     public Game(){
         GameLogic.gameState = GameLogic.GameState.LOADING;
@@ -48,7 +49,8 @@ public class Game {
         leftLines = new BufferedImage[2];
         rightLines = new BufferedImage[2];
         playerOne = new Player();
-        //road = new Road();
+        lineSpeed = 0;
+        lineTop = 0;
     }
 
     private void loadGame(){
@@ -73,23 +75,28 @@ public class Game {
         playerOne.reset();
     }
 
-    public void updateGame(long gameTime, Point mousePosition){
+    public void updateGame(){
         playerOne.update();
-
+        lineSpeed = playerOne.getSpeedY();
+        System.out.println(lineSpeed);
     }
 
-    public void Draw(Graphics2D g2d, Point mousePosition){
+    public void Draw(Graphics2D g2d){
+        lineTop += lineSpeed;
+        if(lineTop > GameLogic.frameHeight + 14){
+            lineTop = 0;
+        }
         g2d.drawImage(background, 0, 0, GameLogic.frameWidth, GameLogic.frameHeight, null);
-        g2d.drawImage(leftLines[0], GameLogic.frameWidth/3-lineWidth/2, 0, lineWidth, lineHeight, null);
-        g2d.drawImage(leftLines[1], GameLogic.frameWidth/3-lineWidth/2, -1*lineHeight, lineWidth, lineHeight, null);
-        g2d.drawImage(rightLines[0], 2*GameLogic.frameWidth/3-lineWidth/2, 0, lineWidth, lineHeight, null);
-        g2d.drawImage(rightLines[1], 2*GameLogic.frameWidth/3-lineWidth/2, -1*lineHeight, lineWidth, lineHeight, null);
+        g2d.drawImage(leftLines[0], GameLogic.frameWidth/3-lineWidth/2, lineTop, lineWidth, lineHeight, null);
+        g2d.drawImage(leftLines[1], GameLogic.frameWidth/3-lineWidth/2, -1*lineHeight + lineTop, lineWidth, lineHeight, null);
+        g2d.drawImage(rightLines[0], 2*GameLogic.frameWidth/3-lineWidth/2, lineTop, lineWidth, lineHeight, null);
+        g2d.drawImage(rightLines[1], 2*GameLogic.frameWidth/3-lineWidth/2, -1*lineHeight + lineTop, lineWidth, lineHeight, null);
         //road.Draw(g2d);
         playerOne.Draw(g2d);
     }
 
-    public void DrawEnd(Graphics2D g2d, Point mousePosition){
-        Draw(g2d, mousePosition);
+    public void DrawEnd(Graphics2D g2d){
+        Draw(g2d);
         g2d.drawString("GAME OVER", GameLogic.frameWidth/2 - 50, GameLogic.frameHeight/2 + 50);
         g2d.drawString("Press any key to restart", GameLogic.frameWidth/2 - 100, GameLogic.frameHeight/2 + 70);
 
