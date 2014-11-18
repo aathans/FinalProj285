@@ -23,9 +23,9 @@ public abstract class GameCanvas extends JPanel implements KeyListener, MouseLis
         this.setFocusable(true);
         this.setBackground(Color.black);
         if(false){
-            BuffereredImage blankCursorImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-            Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(blankCursorImage, new Point(0,0), null);
-            this.setCursor(blankCursor);
+            //BuffereredImage blankCursorImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+            //Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(blankCursorImage, new Point(0,0), null);
+            //this.setCursor(blankCursor);
         }
 
         this.addKeyListener(this);
