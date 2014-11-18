@@ -12,7 +12,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.security.Key;
 import javax.swing.JPanel;
+
 /**
  * Created by Alex on 11/17/14.
  */
@@ -40,5 +42,48 @@ public abstract class GameCanvas extends JPanel implements KeyListener, MouseLis
         super.paintComponent(g2d);
         Draw(g2d);
     }
+
+    @Override
+    public void keyPressed(KeyEvent event){
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent event){
+
+    }
+
+    @Override
+    public void keyTyped(KeyEvent event){
+
+    }
+
+    public abstract void keyReleasedLogic(KeyEvent event);
+
+    @Override
+    public void mousePressed(MouseEvent event){
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent event){
+
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent event){
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent event){
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent event){
+
+    }
+
 
 }
