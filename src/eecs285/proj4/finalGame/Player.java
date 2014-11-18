@@ -46,7 +46,7 @@ public class Player {
 
     public Player(){
         setup();
-        loadPlayer();
+        //loadPlayer();
 
         xPos = GameLogic.frameWidth/2;
 

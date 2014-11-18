@@ -66,7 +66,8 @@ public class GameLogic extends GameCanvas {
     private void loadMenu(){
 
      try{
-         URL menuImagePath = this.getClass().getResource("/resources/road.jpg");
+         URL menuImagePath = this.getClass().getResource("/images/road.jpg");
+
          menuImage = ImageIO.read(menuImagePath);
      } catch(IOException ex){
          Logger.getLogger(GameLogic.class.getName()).log(Level.SEVERE, null, ex);
@@ -138,23 +139,19 @@ public class GameLogic extends GameCanvas {
     @Override
     public void Draw(Graphics2D g2d){
         switch (gameState){
-            case STARTING:
-                setup();
-                loadMenu();
-                gameState = GameState.MENU;
-                break;
-            case SHOWING:
-                break;
             case LOADING:
                 break;
             case MENU:
+                g2d.drawImage(menuImage, 0, 0, frameWidth, frameHeight, null);
+                g2d.setColor(Color.white);
                 break;
             case OPTIONS:
                 break;
             case PLAYING:
-
+                game.Draw(g2d, mousePos());
                 break;
             case ENDED:
+                game.DrawEnd(g2d, mousePos());
                 break;
             case CRASHED:
                 break;

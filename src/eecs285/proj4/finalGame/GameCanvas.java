@@ -53,12 +53,13 @@ public abstract class GameCanvas extends JPanel implements KeyListener, MouseLis
 
     @Override
     public void keyPressed(KeyEvent event){
-
+        keyboardState[event.getKeyCode()] = true;
     }
 
     @Override
     public void keyReleased(KeyEvent event){
-
+        keyboardState[event.getKeyCode()] = false;
+        keyReleasedLogic(event);
     }
 
     @Override
