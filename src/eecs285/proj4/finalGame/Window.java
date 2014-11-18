@@ -10,18 +10,13 @@ public class Window extends JFrame {
 
     private Window(){
         this.setTitle("Game Name");
-        if(false){
-            this.setUndecorated(true);
-            this.setExtendedState(this.MAXIMIZED_BOTH);
-        }else{
-            this.setSize(750,500);
-            this.setLocationRelativeTo(null);
-            this.setResizable(false);
-        }
+
+        this.setSize(500,1000);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        //this.setContentPane(new Framework());
+        this.setContentPane(new GameLogic());
         this.setVisible(true);
     }
 

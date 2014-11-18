@@ -20,15 +20,18 @@ import javax.swing.JPanel;
  */
 public abstract class GameCanvas extends JPanel implements KeyListener, MouseListener {
 
+    private static boolean[] keyboardState = new boolean[525];
+    //private static boolean[] mouseState = new boolean[3];
+
     public GameCanvas(){
         this.setDoubleBuffered(true);
         this.setFocusable(true);
         this.setBackground(Color.black);
-        if(false){
+        //if(false){
             //BuffereredImage blankCursorImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
             //Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(blankCursorImage, new Point(0,0), null);
             //this.setCursor(blankCursor);
-        }
+        //}
 
         this.addKeyListener(this);
         this.addMouseListener(this);
@@ -41,6 +44,11 @@ public abstract class GameCanvas extends JPanel implements KeyListener, MouseLis
         Graphics2D g2d = (Graphics2D) g;
         super.paintComponent(g2d);
         Draw(g2d);
+    }
+
+
+    public static boolean keyboardKeyState(int key){
+        return keyboardState[key];
     }
 
     @Override

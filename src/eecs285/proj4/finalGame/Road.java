@@ -14,13 +14,19 @@ import javax.imageio.ImageIO;
  */
 public class Road {
 
-    public int x;
+    public int xPos;
 
-    public int y;
+    public int yPos;
 
     private BufferedImage roadImage;
 
+    private BufferedImage[] leftLines;
+
+    private BufferedImage[] rightLines;
+
     public int roadWidth;
+
+    public int lineHeight;
 
     public Road(){
         setupRoad();
@@ -28,7 +34,8 @@ public class Road {
     }
 
     private void setupRoad(){
-
+        leftLines = new BufferedImage[2];
+        rightLines = new BufferedImage[2];
     }
 
     private void loadRoad(){
@@ -36,12 +43,24 @@ public class Road {
             URL roadImagePath = this.getClass().getResource("/resources/road.img");
             roadImage = ImageIO.read(roadImagePath);
             roadWidth = roadImage.getWidth();
+
+            URL linesImagePath = this.getClass().getResource("/resources/lines.jpg");
+            leftLines[0] = ImageIO.read(linesImagePath);
+            leftLines[1] = ImageIO.read(linesImagePath);
+            rightLines[0] = ImageIO.read(linesImagePath);
+            rightLines[1] = ImageIO.read(linesImagePath);
+            lineHeight = leftLines[0].getHeight();
+
         }catch (IOException ex){
             Logger.getLogger(Road.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public void Draw(Graphics2D g2d){
-        g2d.drawImage(roadImage, x, y, null);
+        g2d.drawImage(roadImage, xPos, yPos, null);
+        g2d.drawImage(leftLines[0], GameLogic.frameWidth/3, 0, null);
+        g2d.drawImage(leftLines[1], GameLogic.frameWidth/3, -1*lineHeight, null);
+        g2d.drawImage(rightLines[0], 2*GameLogic.frameWidth/3, 0, null);
+        g2d.drawImage(rightLines[1], 2*GameLogic.frameWidth/3, -1*lineHeight, null);
     }
 }

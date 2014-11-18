@@ -24,7 +24,7 @@ public class GameLogic extends GameCanvas {
 
     public static final long nanosPerSecond = 1000000000L;
 
-    public static final long millisPerSecond = 1000000L;
+    public static final long nanosPerMili = nanosPerSecond/1000L;
 
     private final int FPS = 20;
 
@@ -44,7 +44,9 @@ public class GameLogic extends GameCanvas {
     private BufferedImage menuImage;
 
     public GameLogic(){
+
         super();
+
         gameState = GameState.SHOWING;
 
         Thread mainThread = new Thread(){
@@ -53,6 +55,7 @@ public class GameLogic extends GameCanvas {
                listenGame();
             }
         };
+
         mainThread.start();
     }
 
@@ -63,7 +66,7 @@ public class GameLogic extends GameCanvas {
     private void loadMenu(){
 
      try{
-         URL menuImagePath = this.getClass().getResource("/resources/menu.jpg");
+         URL menuImagePath = this.getClass().getResource("/resources/road.jpg");
          menuImage = ImageIO.read(menuImagePath);
      } catch(IOException ex){
          Logger.getLogger(GameLogic.class.getName()).log(Level.SEVERE, null, ex);
@@ -72,6 +75,7 @@ public class GameLogic extends GameCanvas {
     }
 
     private void listenGame(){
+
         long showingTime = 0;
         long lastShowingTime = System.nanoTime();
         long beginTime;
@@ -88,6 +92,14 @@ public class GameLogic extends GameCanvas {
                     gameState = GameState.MENU;
                     break;
                 case SHOWING:
+                    if(this.getWidth() > 1 && showingTime > nanosPerSecond){
+                        frameWidth = this.getWidth();
+                        frameHeight = this.getHeight();
+                        gameState = GameState.STARTING;
+                    }else{
+                        showingTime += System.nanoTime() - lastShowingTime;
+                        lastShowingTime = System.nanoTime();
+                    }
                     break;
                 case LOADING:
                     break;
@@ -96,6 +108,9 @@ public class GameLogic extends GameCanvas {
                 case OPTIONS:
                     break;
                 case PLAYING:
+                    elapsedTime += System.nanoTime() - prevTime;
+                    game.updateGame(elapsedTime, mousePos());
+                    prevTime = System.nanoTime();
                     break;
                 case ENDED:
                     break;
@@ -103,7 +118,7 @@ public class GameLogic extends GameCanvas {
                     break;
 
             }
-
+            repaint();
             timeTaken = System.nanoTime() - beginTime;
             timeLeft = (UPDATE_DELAY - timeTaken)/nanosPerSecond;
 
@@ -122,12 +137,70 @@ public class GameLogic extends GameCanvas {
 
     @Override
     public void Draw(Graphics2D g2d){
+        switch (gameState){
+            case STARTING:
+                setup();
+                loadMenu();
+                gameState = GameState.MENU;
+                break;
+            case SHOWING:
+                break;
+            case LOADING:
+                break;
+            case MENU:
+                break;
+            case OPTIONS:
+                break;
+            case PLAYING:
 
+                break;
+            case ENDED:
+                break;
+            case CRASHED:
+                break;
+        }
+    }
+
+    private void newGame(){
+        elapsedTime = 0;
+        prevTime = System.nanoTime();
+
+        game = new Game();
+    }
+
+    private void restart(){
+        elapsedTime = 0;
+        prevTime = System.nanoTime();
+
+        game.restart();
+
+        gameState = GameState.PLAYING;
+    }
+
+    private Point mousePos(){
+        try{
+            Point mousePointer = this.getMousePosition();
+
+            if(mousePointer != null){
+                return mousePointer;
+            }else{
+                return new Point(0,0);
+            }
+        }catch (Exception event){
+            return new Point(0,0);
+        }
     }
 
     @Override
     public void keyReleasedLogic(KeyEvent event){
-
+        switch(gameState){
+            case MENU:
+                newGame();
+                break;
+            case ENDED:
+                restart();
+                break;
+        }
     }
 
 
