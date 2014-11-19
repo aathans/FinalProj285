@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.security.Key;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,10 +45,7 @@ public class Player {
 
     public Player(){
         setup();
-        //loadPlayer();
-
-        xPos = GameLogic.frameWidth/2;
-
+        loadPlayer();
     }
 
     private void setup(){
@@ -58,11 +56,13 @@ public class Player {
 
     private void loadPlayer(){
         try{
-            URL carPath = this.getClass().getResource("/resources/car.jpg");
+            URL carPath = this.getClass().getResource("/images/car.png");
             carImage = ImageIO.read(carPath);
+            carHeight = carImage.getHeight();
+            carWidth = carImage.getWidth();
 
-            URL carCrashPath = this.getClass().getResource("/resources/crash.jpg");
-            carCrashImage = ImageIO.read(carCrashPath);
+            //URL carCrashPath = this.getClass().getResource("/resources/crash.jpg");
+            //carCrashImage = ImageIO.read(carCrashPath);
 
         } catch(IOException ex){
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
@@ -72,8 +72,8 @@ public class Player {
     public void reset(){
         crashed = false;
 
-        xPos = GameLogic.frameWidth/2;
-        yPos = GameLogic.frameHeight - 50;
+        xPos = GameLogic.frameWidth/2 - 75;
+        yPos = GameLogic.frameHeight - 150;
 
         speedX = 0;
         speedY = 2;
@@ -89,22 +89,34 @@ public class Player {
             speedY = 2;
         }
 
-        if(GameCanvas.keyboardKeyState(KeyEvent.VK_RIGHT) && (xPos < GameLogic.frameWidth - carWidth)){
-            speedX += 1;
-        } else if(xPos > carWidth){
-            speedX -= 1;
+        if(GameCanvas.keyboardKeyState(KeyEvent.VK_RIGHT)){
+            if(xPos < GameLogic.frameWidth - carWidth){
+                speedX += 1;
+            } else {
+                speedX = 0;
+            }
+        } else if(GameCanvas.keyboardKeyState(KeyEvent.VK_LEFT)){
+            if(xPos > 0){
+                speedX -= 1;
+            } else {
+                speedX = 0;
+            }
         } else {
             speedX = 0;
         }
 
+
         xPos += speedX;
-        yPos += speedY;
+
+        //yPos += speedY;
         score += speedY;
     }
 
     public void Draw(Graphics2D g2d){
         g2d.setColor(Color.white);
         g2d.drawString("Score: " + score, 5, 15 );
+
+        g2d.drawImage(carImage, xPos, yPos, carWidth, carHeight, null);
 
         if(crashed){
             g2d.drawImage(carCrashImage, xPos, yPos, null);
