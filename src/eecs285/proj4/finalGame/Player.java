@@ -90,24 +90,22 @@ public class Player {
         }
 
         if(GameCanvas.keyboardKeyState(KeyEvent.VK_RIGHT)){
-            if(xPos < GameLogic.frameWidth - carWidth){
                 speedX += 1;
-            } else {
-                speedX = 0;
-            }
         } else if(GameCanvas.keyboardKeyState(KeyEvent.VK_LEFT)){
-            if(xPos > 0){
                 speedX -= 1;
-            } else {
-                speedX = 0;
-            }
         } else {
             speedX = 0;
         }
 
 
         xPos += speedX;
-
+        if (xPos < 0 ){
+            xPos = 0;
+            speedX = 0;
+        } else if (xPos > GameLogic.frameWidth - carWidth){
+            xPos = GameLogic.frameWidth - carWidth;
+            speedX = 0;
+        }
         //yPos += speedY;
         score += speedY;
     }
