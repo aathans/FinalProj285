@@ -1,11 +1,7 @@
 package eecs285.proj4.finalGame;
 
-import com.sun.corba.se.impl.orbutil.graph.Graph;
-import sun.rmi.runtime.Log;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;

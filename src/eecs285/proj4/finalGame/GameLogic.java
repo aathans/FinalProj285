@@ -3,11 +3,9 @@ package eecs285.proj4.finalGame;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
-import java.security.Key;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
