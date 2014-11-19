@@ -61,7 +61,7 @@ public class Player {
             carHeight = carImage.getHeight();
             carWidth = carImage.getWidth();
 
-            URL carCrashPath = this.getClass().getResource("/images/explosion.jpg");
+            URL carCrashPath = this.getClass().getResource("/images/explosion.png");
             carCrashImage = ImageIO.read(carCrashPath);
 
         } catch(IOException ex){

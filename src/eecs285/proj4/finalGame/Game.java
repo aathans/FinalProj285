@@ -21,8 +21,6 @@ public class Game {
 
     private Obstacle[] obstacleList;
 
-    private int numObstacles;
-
     private BufferedImage background;
 
     private BufferedImage[] leftLines;
@@ -54,8 +52,11 @@ public class Game {
         rightLines = new BufferedImage[2];
         playerOne = new Player();
 
-        obstacleList = new Obstacle[3];
-        numObstacles = 0;
+        obstacleList = new Obstacle[6];
+        for(int i = 0; i < 3; i++){
+            obstacleList[i] = new CarObstacle();
+            obstacleList[i+3] = new WallObstacle();
+        }
 
         lineSpeed = 0;
         lineTop = 0;
@@ -80,14 +81,16 @@ public class Game {
     }
 
     public void addObstacle(int obstacleType){
-        switch(obstacleType){
-            case 0:
-                obstacleList[numObstacles] = new CarObstacle();
+
+        int start = obstacleType*3;
+        int end = start + 3;
+        for(int i = start; i < end; i++){
+            if(!obstacleList[i].inPlay){
+                obstacleList[i].putInPlay();
                 break;
-            case 1:
-                obstacleList[numObstacles] = new WallObstacle();
-                break;
+            }
         }
+
     }
 
     public void restart(){
@@ -97,10 +100,6 @@ public class Game {
     public void updateGame(){
         playerOne.update();
         lineSpeed = playerOne.getSpeedY();
-        for(Obstacle o : obstacleList) {
-            o.update();
-        }
-        System.out.println(lineSpeed);
     }
 
     public void Draw(Graphics2D g2d){
@@ -113,7 +112,13 @@ public class Game {
         g2d.drawImage(leftLines[1], GameLogic.frameWidth/3-lineWidth/2, -1*lineHeight + lineTop, lineWidth, lineHeight, null);
         g2d.drawImage(rightLines[0], 2*GameLogic.frameWidth/3-lineWidth/2, lineTop, lineWidth, lineHeight, null);
         g2d.drawImage(rightLines[1], 2*GameLogic.frameWidth/3-lineWidth/2, -1*lineHeight + lineTop, lineWidth, lineHeight, null);
-        //road.Draw(g2d);
+        if(obstacleList.length != 0) {
+            for (Obstacle o : obstacleList) {
+                if (o != null && o.inPlay){
+                    o.update(g2d, lineSpeed);
+                }
+            }
+        }
         playerOne.Draw(g2d);
     }
 

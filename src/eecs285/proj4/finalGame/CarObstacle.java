@@ -20,6 +20,8 @@ public class CarObstacle extends Obstacle {
         try {
             URL carPath = this.getClass().getResource("/images/blue_car_mini.png");
             obstacleImage = ImageIO.read(carPath);
+            obstacleHeight = obstacleImage.getHeight();
+            obstacleWidth = obstacleImage.getWidth();
         } catch(IOException ex){
             Logger.getLogger(CarObstacle.class.getName()).log(Level.SEVERE, null, ex);
         }

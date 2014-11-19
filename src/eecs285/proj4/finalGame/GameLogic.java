@@ -84,6 +84,8 @@ public class GameLogic extends GameCanvas {
         long beginTime;
         long timeTaken;
         long timeLeft;
+        boolean obstacleAdded = false;
+
         Random randomGenerator  = new Random();
         while(true){
             beginTime = System.nanoTime();
@@ -112,12 +114,16 @@ public class GameLogic extends GameCanvas {
                     break;
                 case PLAYING:
                     elapsedTime += System.nanoTime() - prevTime;
-                    game.updateGame();
                     prevTime = System.nanoTime();
-                    if(elapsedTime/nanosPerSecond % 5 == 0){
+                    long timeInSeconds = elapsedTime/nanosPerSecond;
+                    if(timeInSeconds % 2 == 0 && !obstacleAdded){
+                        obstacleAdded = true;
                         int nextObstacleType = randomGenerator.nextInt(2);
                         game.addObstacle(nextObstacleType);
+                    }else if(timeInSeconds % 2 != 0){
+                        obstacleAdded = false;
                     }
+                    game.updateGame();
                     break;
                 case ENDED:
                     break;
@@ -195,11 +201,28 @@ public class GameLogic extends GameCanvas {
             return new Point(0,0);
         }
     }
-
     @Override
     public void keyReleasedLogic(KeyEvent event){
         switch(gameState){
             case MENU:
+                GameCanvas.option.setVisible(false);
+//                if(GameCanvas.diffChoice.getSelectedIndex() == 0)
+//                {
+//                    //Easy Game
+//                    System.out.println("Easy Game");
+//                }
+//                else if(GameCanvas.diffChoice.getSelectedIndex() == 1)
+//                {
+//                    //Medium Game
+//                    System.out.println("Medium Game");
+//
+//                }
+//                else
+//                {
+//                    //Hard Game
+//                    System.out.println("Hard Game");
+//                }
+
                 newGame();
                 break;
             case ENDED:

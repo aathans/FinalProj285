@@ -7,17 +7,28 @@ import javax.swing.SwingUtilities;
  * Created by Alex on 11/17/14.
  */
 public class Window extends JFrame {
+    private static JFrame frame = new JFrame();
 
     private Window(){
-        this.setTitle("Game Name");
+        frame.setTitle("Game Name");
 
-        this.setSize(500,750);
-        this.setLocationRelativeTo(null);
-        this.setResizable(false);
+        frame.setSize(500, 750);
+        frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
 
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setContentPane(new GameLogic());
-        this.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setContentPane(new GameLogic());
+        frame.setVisible(true);
+    }
+
+    public static void setDisabled()
+    {
+        frame.setEnabled(false);
+    }
+
+    public static void setEnabled()
+    {
+        frame.setEnabled(true);
     }
 
     public static void main(String[] args){
