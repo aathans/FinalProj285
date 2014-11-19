@@ -149,6 +149,7 @@ public class GameLogic extends GameCanvas {
                 break;
             case PLAYING:
                 game.Draw(g2d);
+                g2d.drawString("Time Taken: " + elapsedTime/nanosPerSecond , 0, 50);
                 break;
             case ENDED:
                 game.DrawEnd(g2d);
