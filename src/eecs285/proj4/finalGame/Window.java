@@ -10,7 +10,7 @@ public class Window extends JFrame {
     private static JFrame frame = new JFrame();
 
     private Window(){
-        frame.setTitle("Game Name");
+        frame.setTitle("STREET RACER");
 
         frame.setSize(500, 750);
         frame.setLocationRelativeTo(null);

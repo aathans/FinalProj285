@@ -17,19 +17,17 @@ import javax.swing.*;
 /**
  * Created by Alex on 11/17/14.
  */
-public abstract class GameCanvas extends JPanel implements KeyListener, MouseListener {
+public abstract class GameCanvas extends JPanel implements KeyListener {
 
     private static boolean[] keyboardState = new boolean[525];
     public static JButton option;
     public static JComboBox<String> diffChoice;
-    private static boolean[] mouseState = new boolean[3];
 
     public GameCanvas(){
         this.setDoubleBuffered(true);
         this.setFocusable(true);
         this.setBackground(Color.black);
         this.addKeyListener(this);
-        this.addMouseListener(this);
         option = new JButton("Options");
         option.addActionListener(new ActionListener() {
             @Override
@@ -101,31 +99,6 @@ public abstract class GameCanvas extends JPanel implements KeyListener, MouseLis
     }
 
     public abstract void keyReleasedLogic(KeyEvent event);
-
-    @Override
-    public void mousePressed(MouseEvent event){
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent event){
-
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent event){
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent event){
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent event){
-
-    }
 
 
 }

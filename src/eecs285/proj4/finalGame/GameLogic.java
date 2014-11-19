@@ -1,9 +1,7 @@
 package eecs285.proj4.finalGame;
 
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -29,7 +27,7 @@ public class GameLogic extends GameCanvas {
 
     public static final long nanosPerMili = nanosPerSecond/1000L;
 
-    private final int FPS = 20;
+    private final int FPS = 125;
 
     private final long UPDATE_DELAY = nanosPerSecond / FPS;
 
@@ -41,6 +39,8 @@ public class GameLogic extends GameCanvas {
     private long elapsedTime;
 
     private long prevTime;
+
+    private boolean keyHeldBeforeCrash;
 
     private Game game;
 
@@ -63,7 +63,7 @@ public class GameLogic extends GameCanvas {
     }
 
     private void setup(){
-
+        keyHeldBeforeCrash = true;
     }
 
     private void loadMenu(){
@@ -123,7 +123,10 @@ public class GameLogic extends GameCanvas {
                     }else if(timeInSeconds % 2 != 0){
                         obstacleAdded = false;
                     }
-                    game.updateGame();
+                    boolean collision = game.updateGame();
+                    if (collision){
+                        gameState = GameState.CRASHED;
+                    }
                     break;
                 case ENDED:
                     break;
@@ -133,8 +136,8 @@ public class GameLogic extends GameCanvas {
             }
             repaint();
             timeTaken = System.nanoTime() - beginTime;
-            timeLeft = (UPDATE_DELAY - timeTaken)/nanosPerSecond;
-
+            timeLeft = (UPDATE_DELAY - timeTaken)/nanosPerMili;
+            System.out.println(timeLeft);
             if(timeLeft < 10){
                 timeLeft = 10;
             }
@@ -156,18 +159,22 @@ public class GameLogic extends GameCanvas {
             case MENU:
                 g2d.drawImage(menuImage, 0, 0, frameWidth, frameHeight, null);
                 g2d.setColor(Color.white);
+                g2d.setFont(new Font("TimesRoman", Font.BOLD, 30));
+                g2d.drawString("STREET RACER", GameLogic.frameWidth / 2 - 115, GameLogic.frameHeight / 2 - 150);
+                g2d.setFont(new Font("TimeRoman", Font.PLAIN, 12));
                 g2d.drawString("Press any key to start", GameLogic.frameWidth/2 - 70, GameLogic.frameHeight/2);
                 break;
             case OPTIONS:
                 break;
             case PLAYING:
                 game.Draw(g2d);
-                g2d.drawString("Time Taken: " + elapsedTime/nanosPerSecond , 0, 50);
+                g2d.drawString("Time Taken: " + elapsedTime/nanosPerSecond , 5, 55);
                 break;
             case ENDED:
                 game.DrawEnd(g2d);
                 break;
             case CRASHED:
+                game.DrawCrashed(g2d);
                 break;
         }
     }
@@ -188,19 +195,6 @@ public class GameLogic extends GameCanvas {
         gameState = GameState.PLAYING;
     }
 
-    private Point mousePos(){
-        try{
-            Point mousePointer = this.getMousePosition();
-
-            if(mousePointer != null){
-                return mousePointer;
-            }else{
-                return new Point(0,0);
-            }
-        }catch (Exception event){
-            return new Point(0,0);
-        }
-    }
     @Override
     public void keyReleasedLogic(KeyEvent event){
         switch(gameState){
@@ -227,6 +221,19 @@ public class GameLogic extends GameCanvas {
                 break;
             case ENDED:
                 restart();
+                break;
+            case CRASHED:
+                if(keyHeldBeforeCrash){
+                    try {
+                        Thread.sleep(2000);
+                    }catch(InterruptedException ex){
+
+                    }
+                    keyHeldBeforeCrash = false;
+                }else {
+                    keyHeldBeforeCrash = true;
+                    restart();
+                }
                 break;
         }
     }

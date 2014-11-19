@@ -1,5 +1,6 @@
 package eecs285.proj4.finalGame;
 
+import com.sun.corba.se.impl.orbutil.graph.Graph;
 import sun.rmi.runtime.Log;
 
 import java.awt.Color;
@@ -86,7 +87,7 @@ public class Game {
         int end = start + 3;
         for(int i = start; i < end; i++){
             if(!obstacleList[i].inPlay){
-                obstacleList[i].putInPlay();
+                obstacleList[i].inPlay = true;
                 break;
             }
         }
@@ -95,11 +96,23 @@ public class Game {
 
     public void restart(){
         playerOne.reset();
+        for(int i = 0; i < 6; i++){
+            obstacleList[i].reset();
+        }
     }
 
-    public void updateGame(){
+    public boolean updateGame(){
         playerOne.update();
         lineSpeed = playerOne.getSpeedY();
+        for(int i = 0; i < 6; i++){
+            if(obstacleList[i].inPlay){
+                boolean collided = obstacleList[i].checkForCollision(playerOne.getxPos(), playerOne.getyPos(), playerOne.getCarWidth(), playerOne.getCarHeight());
+                if(collided){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void Draw(Graphics2D g2d){
@@ -127,5 +140,13 @@ public class Game {
         g2d.drawString("GAME OVER", GameLogic.frameWidth/2 - 50, GameLogic.frameHeight/2 + 50);
         g2d.drawString("Press any key to restart", GameLogic.frameWidth/2 - 100, GameLogic.frameHeight/2 + 70);
 
+    }
+
+    public void DrawCrashed(Graphics2D g2d){
+        playerOne.reset();
+        lineSpeed = 0;
+        Draw(g2d);
+        g2d.drawString("CRASHED", GameLogic.frameWidth/2 - 30, GameLogic.frameHeight/2);
+        g2d.drawString("Press any key to restart", GameLogic.frameWidth/2 - 75, GameLogic.frameHeight/2 + 30);
     }
 }
