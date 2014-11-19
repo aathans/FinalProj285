@@ -5,7 +5,16 @@ package eecs285.proj4.finalGame;
  */
 public class Obstacle {
 
+    private int xPos;
+    private int yPos;
+    private int obstacleHeight;
+    private int obstacleWidth;
+
     Obstacle(){
+
+    }
+
+    public void update(){
 
     }
 }

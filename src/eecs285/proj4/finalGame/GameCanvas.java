@@ -21,7 +21,7 @@ import javax.swing.JPanel;
 public abstract class GameCanvas extends JPanel implements KeyListener, MouseListener {
 
     private static boolean[] keyboardState = new boolean[525];
-    //private static boolean[] mouseState = new boolean[3];
+    private static boolean[] mouseState = new boolean[3];
 
     public GameCanvas(){
         this.setDoubleBuffered(true);

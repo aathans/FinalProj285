@@ -19,6 +19,10 @@ public class Game {
 
     private Player playerOne;
 
+    private Obstacle[] obstacleList;
+
+    private int numObstacles;
+
     private BufferedImage background;
 
     private BufferedImage[] leftLines;
@@ -49,6 +53,10 @@ public class Game {
         leftLines = new BufferedImage[2];
         rightLines = new BufferedImage[2];
         playerOne = new Player();
+
+        obstacleList = new Obstacle[3];
+        numObstacles = 0;
+
         lineSpeed = 0;
         lineTop = 0;
     }
@@ -71,6 +79,17 @@ public class Game {
         }
     }
 
+    public void addObstacle(int obstacleType){
+        switch(obstacleType){
+            case 0:
+                obstacleList[numObstacles] = new CarObstacle();
+                break;
+            case 1:
+                obstacleList[numObstacles] = new WallObstacle();
+                break;
+        }
+    }
+
     public void restart(){
         playerOne.reset();
     }
@@ -78,6 +97,9 @@ public class Game {
     public void updateGame(){
         playerOne.update();
         lineSpeed = playerOne.getSpeedY();
+        for(Obstacle o : obstacleList) {
+            o.update();
+        }
         System.out.println(lineSpeed);
     }
 

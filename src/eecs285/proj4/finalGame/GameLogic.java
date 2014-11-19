@@ -10,14 +10,17 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.security.Key;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+
 
 /**
  * Created by Alex on 11/17/14.
  */
 public class GameLogic extends GameCanvas {
+
     public static int frameWidth;
 
     public static int frameHeight;
@@ -81,7 +84,7 @@ public class GameLogic extends GameCanvas {
         long beginTime;
         long timeTaken;
         long timeLeft;
-
+        Random randomGenerator  = new Random();
         while(true){
             beginTime = System.nanoTime();
 
@@ -111,6 +114,10 @@ public class GameLogic extends GameCanvas {
                     elapsedTime += System.nanoTime() - prevTime;
                     game.updateGame();
                     prevTime = System.nanoTime();
+                    if(elapsedTime/nanosPerSecond % 5 == 0){
+                        int nextObstacleType = randomGenerator.nextInt(2);
+                        game.addObstacle(nextObstacleType);
+                    }
                     break;
                 case ENDED:
                     break;
