@@ -2,22 +2,16 @@ package eecs285.proj4.finalGame;
 
 import java.awt.*;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.security.Key;
 import javax.swing.*;
 
 /**
  * Created by Alex on 11/17/14.
  */
-public abstract class GameCanvas extends JPanel implements KeyListener {
+abstract class GameCanvas extends JPanel implements KeyListener {
 
     private static boolean[] keyboardState = new boolean[525];
     public static JButton option;
