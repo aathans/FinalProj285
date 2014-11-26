@@ -181,10 +181,7 @@ public class GameLogic extends GameCanvas {
         Point b = a.getLocation();
         int xVal = (int) b.getX();
         int yVal = (int) b.getY();
-
-        System.out.println(xVal);
-        System.out.println(yVal);
-
+        
         if(xVal >= 494 && yVal >= 201 && yVal <= 251 && xVal<= 785) {
             newGame();
         }
@@ -217,7 +214,6 @@ public class GameLogic extends GameCanvas {
     public void keyReleasedLogic(KeyEvent event){
         switch(gameState){
             case MENU:
-                GameCanvas.option.setVisible(false);
 //                if(GameCanvas.diffChoice.getSelectedIndex() == 0)
 //                {
 //                    //Easy Game

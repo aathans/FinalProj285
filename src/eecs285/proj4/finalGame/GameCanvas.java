@@ -23,8 +23,6 @@ import javax.swing.JPanel;
 abstract class GameCanvas extends JPanel implements KeyListener, MouseListener {
 
     private static boolean[] keyboardState = new boolean[525];
-    public static JButton option;
-    public static JComboBox<String> diffChoice;
 
     public GameCanvas(){
         this.setDoubleBuffered(true);
@@ -32,44 +30,6 @@ abstract class GameCanvas extends JPanel implements KeyListener, MouseListener {
         this.setBackground(Color.black);
         this.addKeyListener(this);
         this.addMouseListener(this);
-        option = new JButton("Options");
-        option.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                Window.setDisabled();
-                final JFrame optionFrame = new JFrame("Options");
-                JPanel Layout = new JPanel();
-                Layout.setLayout(new BoxLayout(Layout, BoxLayout.Y_AXIS));
-                JPanel difficultyLevel = new JPanel();
-                difficultyLevel.setLayout(new FlowLayout(FlowLayout.LEFT));
-                JLabel diffLabel = new JLabel("Difficulty Level");
-                difficultyLevel.add(diffLabel);
-                String[] diffString = new String[]{"Easy", "Medium", "Hard"};
-                diffChoice = new JComboBox<String>(diffString);
-                difficultyLevel.add(diffChoice);
-                Layout.add(difficultyLevel);
-
-                JButton okButton = new JButton("OK");
-                okButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        optionFrame.dispose();
-                        Window.setEnabled();
-                    }
-                });
-                JPanel okPanel = new JPanel();
-                okPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-                okPanel.add(okButton);
-                Layout.add(okPanel);
-                optionFrame.add(Layout);
-                optionFrame.pack();
-                optionFrame.setVisible(true);
-
-            }
-        });
-        option.setFocusable(false);
-        add(option);
     }
 
     public abstract void Draw(Graphics2D g2d);
