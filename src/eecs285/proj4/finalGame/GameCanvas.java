@@ -7,11 +7,20 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.*;
 import javax.swing.*;
+import java.awt.event.MouseListener;
+import java.awt.Cursor;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.security.Key;
+import javax.swing.JPanel;
 
 /**
  * Created by Alex on 11/17/14.
  */
-abstract class GameCanvas extends JPanel implements KeyListener {
+abstract class GameCanvas extends JPanel implements KeyListener, MouseListener {
 
     private static boolean[] keyboardState = new boolean[525];
     public static JButton option;
@@ -22,6 +31,7 @@ abstract class GameCanvas extends JPanel implements KeyListener {
         this.setFocusable(true);
         this.setBackground(Color.black);
         this.addKeyListener(this);
+        this.addMouseListener(this);
         option = new JButton("Options");
         option.addActionListener(new ActionListener() {
             @Override
@@ -94,5 +104,22 @@ abstract class GameCanvas extends JPanel implements KeyListener {
 
     public abstract void keyReleasedLogic(KeyEvent event);
 
+    @Override
+    public void mousePressed(MouseEvent event){
+    }
+    @Override
+    public void mouseReleased(MouseEvent event){
+    }
+
+    public void mouseClicked(MouseEvent event){
+        System.out.println("CLICKED IN GAMECANVAS");
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent event){
+    }
+    @Override
+    public void mouseExited(MouseEvent event){
+    }
 
 }

@@ -3,6 +3,7 @@ package eecs285.proj4.finalGame;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -42,7 +43,7 @@ public class GameLogic extends GameCanvas {
 
     private Game game;
 
-    private BufferedImage menuImage;
+    private BufferedImage menuScreen;
 
     public GameLogic(){
 
@@ -67,8 +68,9 @@ public class GameLogic extends GameCanvas {
     private void loadMenu(){
 
      try{
-         URL menuImagePath = this.getClass().getResource("/images/road.jpg");
-         menuImage = ImageIO.read(menuImagePath);
+         URL menuScreenPath = this.getClass().getResource("/images/MenuScreen.png");
+         menuScreen = ImageIO.read(menuScreenPath);
+
      } catch(IOException ex){
          Logger.getLogger(GameLogic.class.getName()).log(Level.SEVERE, null, ex);
      }
@@ -135,7 +137,7 @@ public class GameLogic extends GameCanvas {
             repaint();
             timeTaken = System.nanoTime() - beginTime;
             timeLeft = (UPDATE_DELAY - timeTaken)/nanosPerMili;
-            System.out.println(timeLeft);
+
             if(timeLeft < 10){
                 timeLeft = 10;
             }
@@ -155,12 +157,8 @@ public class GameLogic extends GameCanvas {
             case LOADING:
                 break;
             case MENU:
-                g2d.drawImage(menuImage, 0, 0, frameWidth, frameHeight, null);
                 g2d.setColor(Color.white);
-                g2d.setFont(new Font("TimesRoman", Font.BOLD, 30));
-                g2d.drawString("STREET RACER", GameLogic.frameWidth / 2 - 115, GameLogic.frameHeight / 2 - 150);
-                g2d.setFont(new Font("TimeRoman", Font.PLAIN, 12));
-                g2d.drawString("Press any key to start", GameLogic.frameWidth/2 - 70, GameLogic.frameHeight/2);
+                g2d.drawImage(menuScreen,0,0,frameWidth,frameHeight,null);
                 break;
             case OPTIONS:
                 break;
@@ -174,6 +172,28 @@ public class GameLogic extends GameCanvas {
             case CRASHED:
                 game.DrawCrashed(g2d);
                 break;
+        }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent event){
+        PointerInfo a  = MouseInfo.getPointerInfo();
+        Point b = a.getLocation();
+        int xVal = (int) b.getX();
+        int yVal = (int) b.getY();
+
+        System.out.println(xVal);
+        System.out.println(yVal);
+
+        if(xVal >= 494 && yVal >= 201 && yVal <= 251 && xVal<= 785) {
+            newGame();
+        }
+        else if(xVal >= 409 && yVal >= 725 && yVal <= 753 && xVal <= 585){
+            quitGame();
+        }
+        else if(xVal >= 494 && xVal<= 785 && yVal >= 287 && yVal <= 340){
+            //newSettings();
+
         }
     }
 
@@ -236,5 +256,23 @@ public class GameLogic extends GameCanvas {
         }
     }
 
+    private void quitGame(){
+        System.exit(1);
+    }
+
+    private Point mousePos(){
+        try{
+            Point mousePointer = this.getMousePosition();
+            if(mousePointer != null){
+                return mousePointer;
+            }else{
+                return new Point(0,0);
+            }
+        }catch (Exception event){
+            return new Point(0,0);
+        }
+    }
 
 }
+
+
