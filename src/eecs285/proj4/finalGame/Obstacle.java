@@ -43,16 +43,16 @@ public class Obstacle {
         Draw(g2d);
     }
 
-    public void Draw(Graphics2D g2d){
+    private void Draw(Graphics2D g2d){
         g2d.drawImage(obstacleImage, xPos, yPos, obstacleWidth, obstacleHeight, null);
     }
 
     public boolean checkForCollision(int carX, int carY, int carWidth, int carHeight){
 
-        if((carX + carWidth < xPos + 10) || (xPos + obstacleWidth - 10 < carX)) {
+        if((carX + carWidth < xPos + 15) || (xPos + obstacleWidth - 15 < carX)) {
             return false;
         }
-        if((carY + carHeight < yPos + 10) || (yPos + obstacleHeight - 10 < carY)) {
+        if((carY + carHeight < yPos + 10) || (yPos + obstacleHeight - 15 < carY)) {
             return false;
         }
 

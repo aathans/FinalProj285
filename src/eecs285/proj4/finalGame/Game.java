@@ -18,6 +18,8 @@ public class Game {
 
     private Obstacle[] obstacleList;
 
+    private PowerUp[] powerUpList;
+
     private BufferedImage background;
 
     private BufferedImage[] leftLines;
@@ -27,7 +29,7 @@ public class Game {
     private int lineHeight;
     private int lineWidth;
     private int lineTop;
-
+    private PowerUp powerUpUsed;
     private int lineSpeed;
 
     public Game(){
@@ -50,6 +52,10 @@ public class Game {
         playerOne = new Player();
 
         obstacleList = new Obstacle[6];
+        powerUpList = new PowerUp[6];
+        for(int i = 0; i < 6; i++){
+            powerUpList[i] = new MissilePowerUp();
+        }
         for(int i = 0; i < 3; i++){
             obstacleList[i] = new CarObstacle();
             obstacleList[i+3] = new WallObstacle();
@@ -90,16 +96,49 @@ public class Game {
 
     }
 
+    public void addPowerUp(){
+        for(int i = 0; i < 6; i++){
+            if(!powerUpList[i].inPlay){
+                System.out.println(i);
+                powerUpList[i].inPlay = true;
+                break;
+            }
+        }
+    }
+
     public void restart(){
         playerOne.reset();
         for(int i = 0; i < 6; i++){
             obstacleList[i].reset();
+        }
+        for(int i = 0; i < 6; i++){
+            powerUpList[i].reset();
         }
     }
 
     public boolean updateGame(){
         playerOne.update();
         lineSpeed = playerOne.getSpeedY();
+
+        //Check for collision with powerup
+        int powerUpRetrieved = collidedWithPowerup();
+        if(powerUpRetrieved >= 0){
+            playerOne.addPowerUp(powerUpList[powerUpRetrieved]);
+        }
+        if(powerUpUsed != null) {
+            int objectHitWithPowerUp = powerUpCollidedWithObject();
+            if (objectHitWithPowerUp >= 0) {
+                playerOne.incrementScoreBy(500);
+                obstacleList[objectHitWithPowerUp].reset();
+
+            }
+        }
+
+        //Check for collision with object
+        return collidedWithObject();
+    }
+
+    private boolean collidedWithObject(){
         for(int i = 0; i < 6; i++){
             if(obstacleList[i].inPlay){
                 boolean collided = obstacleList[i].checkForCollision(playerOne.getxPos(), playerOne.getyPos(), playerOne.getCarWidth(), playerOne.getCarHeight());
@@ -109,6 +148,31 @@ public class Game {
             }
         }
         return false;
+    }
+
+    private int collidedWithPowerup(){
+        for(int i = 0; i < 6; i++){
+            if(powerUpList[i].inPlay && !powerUpList[i].wasRetrieved){
+                boolean collided = powerUpList[i].checkForCollision(playerOne.getxPos(), playerOne.getyPos(), playerOne.getCarWidth(), playerOne.getCarHeight());
+                if(collided){
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    private int powerUpCollidedWithObject(){
+        for(int i = 0; i < 6; i++){
+            if(obstacleList[i].inPlay){
+                boolean collided = obstacleList[i].checkForCollision(powerUpUsed.getxPos(), powerUpUsed.getyPos(), powerUpUsed.getPowerUpWidth(), powerUpUsed.getPowerUpHeight());
+                if(collided){
+                    powerUpUsed.reset();
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
     public void Draw(Graphics2D g2d){
@@ -128,7 +192,19 @@ public class Game {
                 }
             }
         }
+
+        if(powerUpList.length != 0){
+            for(PowerUp p : powerUpList){
+                if(p != null && p.inPlay && (!p.wasRetrieved || p.wasUsed)){
+                    p.update(g2d, lineSpeed);
+                }
+            }
+        }
         playerOne.Draw(g2d);
+    }
+
+    public void usePowerUp(){
+        powerUpUsed = playerOne.usePowerUp();
     }
 
     public void DrawEnd(Graphics2D g2d){

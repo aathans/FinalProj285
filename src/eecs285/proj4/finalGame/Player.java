@@ -43,6 +43,10 @@ public class Player {
 
     public int carHeight;
 
+    private boolean hasPowerUp;
+
+    private PowerUp currentPowerUp;
+
 
     public Player(){
         setup();
@@ -73,6 +77,7 @@ public class Player {
 
     public void reset(){
         crashed = false;
+        hasPowerUp = false;
         if(highScore < score){
             highScore = score;
         }
@@ -87,11 +92,11 @@ public class Player {
     public void update(){
 
         if(GameCanvas.keyboardKeyState(KeyEvent.VK_UP) && (yPos > carHeight)){
-            speedY = 4;
+            speedY = 4 + score/5000;
         } else if(GameCanvas.keyboardKeyState(KeyEvent.VK_DOWN)){
-            speedY = 1;
+            speedY = 1 + score/5000;
         } else {
-            speedY = 2;
+            speedY = 2 + score/5000;
         }
 
         if(GameCanvas.keyboardKeyState(KeyEvent.VK_RIGHT)){
@@ -124,6 +129,31 @@ public class Player {
         if(crashed){
             g2d.drawImage(carCrashImage, xPos, yPos, null);
         }
+    }
+
+    public void addPowerUp(PowerUp inPowerUp){
+        if(hasPowerUp){
+            currentPowerUp.reset();
+        }
+        hasPowerUp = true;
+        inPowerUp.wasRetrieved = true;
+        currentPowerUp = inPowerUp;
+    }
+
+    public PowerUp usePowerUp(){
+        if(hasPowerUp) {
+            MissilePowerUp missile = (MissilePowerUp) currentPowerUp;
+            System.out.println("x: " + xPos + " y: " + yPos);
+            missile.setPosition(xPos, yPos);
+            missile.wasUsed = true;
+            hasPowerUp = false;
+            return currentPowerUp;
+        }
+        return null;
+    }
+
+    public void incrementScoreBy(int value){
+        score += value;
     }
 
     public int getSpeedY(){

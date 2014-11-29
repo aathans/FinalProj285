@@ -85,6 +85,7 @@ public class GameLogic extends GameCanvas {
         long timeTaken;
         long timeLeft;
         boolean obstacleAdded = false;
+        boolean powerupAdded = false;
 
         Random randomGenerator  = new Random();
         while(true){
@@ -123,6 +124,14 @@ public class GameLogic extends GameCanvas {
                     }else if(timeInSeconds % 2 != 0){
                         obstacleAdded = false;
                     }
+
+                    if(timeInSeconds % 9 == 0 && !powerupAdded){
+                        powerupAdded = true;
+                        game.addPowerUp();
+                    }else if(timeInSeconds % 9 != 0){
+                        powerupAdded = false;
+                    }
+
                     boolean collision = game.updateGame();
                     if (collision){
                         gameState = GameState.CRASHED;
@@ -177,21 +186,18 @@ public class GameLogic extends GameCanvas {
 
     @Override
     public void mouseClicked(MouseEvent event){
-        PointerInfo a  = MouseInfo.getPointerInfo();
-        Point b = a.getLocation();
+        Point b = mousePos();
         int xVal = (int) b.getX();
         int yVal = (int) b.getY();
-        
-        if(xVal >= 494 && yVal >= 201 && yVal <= 251 && xVal<= 785) {
+
+        if(xVal >= 100 && yVal >= 160 && yVal <= 215 && xVal <= 400) {
             newGame();
-        }
-        else if(xVal >= 409 && yVal >= 725 && yVal <= 753 && xVal <= 585){
+        }else if(xVal >= 100 && yVal >= 245 && yVal <= 295 && xVal <= 400){
+            //newSettings();
+        }else if(xVal >= 20 && yVal >= 680 && yVal <= 712 && xVal <= 200){
             quitGame();
         }
-        else if(xVal >= 494 && xVal<= 785 && yVal >= 287 && yVal <= 340){
-            //newSettings();
 
-        }
     }
 
     private void newGame(){
@@ -214,40 +220,32 @@ public class GameLogic extends GameCanvas {
     public void keyReleasedLogic(KeyEvent event){
         switch(gameState){
             case MENU:
-//                if(GameCanvas.diffChoice.getSelectedIndex() == 0)
-//                {
-//                    //Easy Game
-//                    System.out.println("Easy Game");
-//                }
-//                else if(GameCanvas.diffChoice.getSelectedIndex() == 1)
-//                {
-//                    //Medium Game
-//                    System.out.println("Medium Game");
-//
-//                }
-//                else
-//                {
-//                    //Hard Game
-//                    System.out.println("Hard Game");
-//                }
-
                 newGame();
+                break;
+            case ENDED:
+                //restart();
+                break;
+        }
+    }
+
+    @Override
+    public void keyPressedLogic(KeyEvent event) {
+        switch(gameState){
+            case PLAYING:
+                if(event.getKeyCode() == KeyEvent.VK_SPACE){
+                    game.usePowerUp();
+                }
                 break;
             case ENDED:
                 restart();
                 break;
             case CRASHED:
-                if(keyHeldBeforeCrash){
-                    try {
-                        Thread.sleep(2000);
-                    }catch(InterruptedException ex){
+                try {
+                    Thread.sleep(1000);
+                }catch(InterruptedException e){
 
-                    }
-                    keyHeldBeforeCrash = false;
-                }else {
-                    keyHeldBeforeCrash = true;
-                    restart();
                 }
+                restart();
                 break;
         }
     }
