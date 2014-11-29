@@ -125,12 +125,15 @@ public class Game {
         if(powerUpRetrieved >= 0){
             playerOne.addPowerUp(powerUpList[powerUpRetrieved]);
         }
+
+        //Handle power up being used
         if(powerUpUsed != null) {
             int objectHitWithPowerUp = powerUpCollidedWithObject();
             if (objectHitWithPowerUp >= 0) {
                 playerOne.incrementScoreBy(500);
+                powerUpUsed.reset();
                 obstacleList[objectHitWithPowerUp].reset();
-
+                powerUpUsed = null;
             }
         }
 
@@ -167,7 +170,6 @@ public class Game {
             if(obstacleList[i].inPlay){
                 boolean collided = obstacleList[i].checkForCollision(powerUpUsed.getxPos(), powerUpUsed.getyPos(), powerUpUsed.getPowerUpWidth(), powerUpUsed.getPowerUpHeight());
                 if(collided){
-                    powerUpUsed.reset();
                     return i;
                 }
             }
@@ -209,16 +211,18 @@ public class Game {
 
     public void DrawEnd(Graphics2D g2d){
         Draw(g2d);
-        g2d.drawString("GAME OVER", GameLogic.frameWidth/2 - 50, GameLogic.frameHeight/2 + 50);
-        g2d.drawString("Press any key to restart", GameLogic.frameWidth/2 - 100, GameLogic.frameHeight/2 + 70);
+        g2d.drawString("GAME OVER", GameLogic.frameWidth/2 - 40, GameLogic.frameHeight/2 + 50);
+        g2d.drawString("Press any key to restart", GameLogic.frameWidth/2 - 75, GameLogic.frameHeight/2 + 30);
 
     }
 
     public void DrawCrashed(Graphics2D g2d){
+        playerOne.crashed = true;
+        Draw(g2d);
         playerOne.reset();
         lineSpeed = 0;
-        Draw(g2d);
-        g2d.drawString("CRASHED", GameLogic.frameWidth/2 - 30, GameLogic.frameHeight/2);
+        g2d.drawString("CRASHED", GameLogic.frameWidth/2 - 30, GameLogic.frameHeight/2 + 50);
         g2d.drawString("Press any key to restart", GameLogic.frameWidth/2 - 75, GameLogic.frameHeight/2 + 30);
+
     }
 }

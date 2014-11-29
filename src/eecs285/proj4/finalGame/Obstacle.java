@@ -35,10 +35,7 @@ public class Obstacle {
     public void update(Graphics2D g2d, int speed){
         yPos += speed;
         if(yPos > GameLogic.frameHeight){
-            startLane = randomGenerator.nextInt(3);
-            xPos = GameLogic.frameWidth/3*startLane + 30;
-            yPos = -125;
-            inPlay = false;
+            reset();
         }
         Draw(g2d);
     }
@@ -47,12 +44,12 @@ public class Obstacle {
         g2d.drawImage(obstacleImage, xPos, yPos, obstacleWidth, obstacleHeight, null);
     }
 
-    public boolean checkForCollision(int carX, int carY, int carWidth, int carHeight){
+    public boolean checkForCollision(int inX, int inY, int inWidth, int inHeight){
 
-        if((carX + carWidth < xPos + 15) || (xPos + obstacleWidth - 15 < carX)) {
+        if((inX + inWidth < xPos) || (xPos + obstacleWidth < inX)) {
             return false;
         }
-        if((carY + carHeight < yPos + 10) || (yPos + obstacleHeight - 15 < carY)) {
+        if((inY + inHeight < yPos + 10) || (yPos + obstacleHeight - 15 < inY)) {
             return false;
         }
 

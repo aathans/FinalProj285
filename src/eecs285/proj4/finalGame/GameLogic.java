@@ -12,7 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
-
 /**
  * Created by Alex on 11/17/14.
  */
@@ -39,8 +38,6 @@ public class GameLogic extends GameCanvas {
 
     private long prevTime;
 
-    private boolean keyHeldBeforeCrash;
-
     private Game game;
 
     private BufferedImage menuScreen;
@@ -62,7 +59,7 @@ public class GameLogic extends GameCanvas {
     }
 
     private void setup(){
-        keyHeldBeforeCrash = true;
+
     }
 
     private void loadMenu(){
@@ -86,6 +83,7 @@ public class GameLogic extends GameCanvas {
         long timeLeft;
         boolean obstacleAdded = false;
         boolean powerupAdded = false;
+        boolean collision = false;
 
         Random randomGenerator  = new Random();
         while(true){
@@ -117,6 +115,9 @@ public class GameLogic extends GameCanvas {
                     elapsedTime += System.nanoTime() - prevTime;
                     prevTime = System.nanoTime();
                     long timeInSeconds = elapsedTime/nanosPerSecond;
+                    if(timeInSeconds == 0){
+                        break;
+                    }
                     if(timeInSeconds % 2 == 0 && !obstacleAdded){
                         obstacleAdded = true;
                         int nextObstacleType = randomGenerator.nextInt(2);
@@ -132,20 +133,31 @@ public class GameLogic extends GameCanvas {
                         powerupAdded = false;
                     }
 
-                    boolean collision = game.updateGame();
-                    if (collision){
-                        gameState = GameState.CRASHED;
-                    }
+                    collision = game.updateGame();
+
                     break;
                 case ENDED:
                     break;
                 case CRASHED:
+                    restart();
+                    gameState = GameState.ENDED;
                     break;
 
             }
             repaint();
             timeTaken = System.nanoTime() - beginTime;
             timeLeft = (UPDATE_DELAY - timeTaken)/nanosPerMili;
+
+            if (collision){
+                collision = false;
+                gameState = GameState.CRASHED;
+                repaint();
+                try {
+                    Thread.sleep(1000);
+                }catch(InterruptedException ex){
+
+                }
+            }
 
             if(timeLeft < 10){
                 timeLeft = 10;
@@ -237,9 +249,6 @@ public class GameLogic extends GameCanvas {
                 }
                 break;
             case ENDED:
-                restart();
-                break;
-            case CRASHED:
                 try {
                     Thread.sleep(1000);
                 }catch(InterruptedException e){

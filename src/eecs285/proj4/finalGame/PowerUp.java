@@ -52,12 +52,12 @@ public class PowerUp {
             g2d.drawImage(powerUpImage, xPos, yPos, powerUpWidth, powerUpHeight, null);
     }
 
-    public boolean checkForCollision(int carX, int carY, int carWidth, int carHeight){
+    public boolean checkForCollision(int inX, int inY, int inWidth, int inHeight){
 
-        if((carX + carWidth < xPos) || (xPos + powerUpWidth < carX)) {
+        if((inX + inWidth < xPos) || (xPos + powerUpWidth < inX)) {
             return false;
         }
-        if((carY + carHeight < yPos) || (yPos + powerUpHeight < carY)) {
+        if((inY + inHeight < yPos) || (yPos + powerUpHeight < inY)) {
             return false;
         }
 
