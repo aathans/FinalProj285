@@ -1,6 +1,5 @@
 package eecs285.proj4.finalGame;
 
-
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -11,6 +10,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.sound.sampled.*;
 
 /**
  * Created by Alex on 11/17/14.
@@ -42,12 +42,14 @@ public class GameLogic extends GameCanvas {
 
     private BufferedImage menuScreen;
 
+    private SongPlayer songPlayer;
+
     public GameLogic(){
 
         super();
 
         gameState = GameState.SHOWING;
-
+        songPlayer = new SongPlayer("/FuzzionOutlaws.wav");
         Thread mainThread = new Thread(){
             @Override
             public void run(){
@@ -56,6 +58,22 @@ public class GameLogic extends GameCanvas {
         };
 
         mainThread.start();
+    }
+
+    public static synchronized void playSound(final String url) {
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    Clip backgroundSong = AudioSystem.getClip();
+                    AudioInputStream inputStream = AudioSystem.getAudioInputStream(
+                            this.getClass().getResourceAsStream(url));
+                    backgroundSong.open(inputStream);
+                    backgroundSong.loop(Clip.LOOP_CONTINUOUSLY);
+                } catch (Exception e) {
+                    System.out.println("Error with background song: " + e.getMessage());
+                }
+            }
+        }).start();
     }
 
     private void setup(){
@@ -203,8 +221,10 @@ public class GameLogic extends GameCanvas {
         int yVal = (int) b.getY();
 
         if(xVal >= 100 && yVal >= 160 && yVal <= 215 && xVal <= 400) {
+            //SongPlayer.pauseSound();
             newGame();
         }else if(xVal >= 100 && yVal >= 245 && yVal <= 295 && xVal <= 400){
+            //songPlayer.playSound();
             //newSettings();
         }else if(xVal >= 20 && yVal >= 680 && yVal <= 712 && xVal <= 200){
             quitGame();
@@ -242,6 +262,11 @@ public class GameLogic extends GameCanvas {
 
     @Override
     public void keyPressedLogic(KeyEvent event) {
+
+        if(event.getKeyCode() == KeyEvent.VK_P){
+            SongPlayer.toggleSound();
+        }
+
         switch(gameState){
             case PLAYING:
                 if(event.getKeyCode() == KeyEvent.VK_SPACE){

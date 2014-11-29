@@ -1,6 +1,8 @@
 package eecs285.proj4.finalGame;
 
 
+import sun.audio.AudioPlayer;
+
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -8,6 +10,8 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import sun.audio.*;
+import java.io.FileInputStream;
 
 /**
  * Created by Alex on 11/17/14.
@@ -45,6 +49,7 @@ public class Game {
         };
         initializeGame.start();
     }
+
 
     private void setup(){
         leftLines = new BufferedImage[2];
