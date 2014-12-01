@@ -18,6 +18,8 @@ import java.io.FileInputStream;
  */
 public class Game {
 
+    private final int scoreLabelY = 15;
+
     private Player playerOne;
 
     private Multiplayer p;
@@ -56,7 +58,6 @@ public class Game {
                 if(isMultiplayer){
                     p = new Multiplayer("35.2.196.23", 2000);
                     p.createConnection();
-                    p.sendUpdate("testing. If the program terminates here it works");
                 }
                 GameLogic.gameState = GameLogic.GameState.PLAYING;
             }
@@ -155,14 +156,24 @@ public class Game {
             }
         }
 
-        if(isMultiplayer){
-            playerScore = playerOne.getScore();
-            p.sendUpdate("Other player score: " + playerScore);
-            opponentScore = p.getOpponentScore();
-        }
+        playerScore = playerOne.getScore();
 
+        boolean crashed = collidedWithObject();
+
+        if(isMultiplayer){
+            String pScore = String.valueOf(playerScore);
+            p.sendUpdate(pScore);
+            if(crashed){
+                p.sendUpdate("-1");
+            }
+            do {
+                opponentScore = p.getOpponentScore();
+            }while (!p.isOpponentFinished() && crashed);
+        }
+        System.out.println("YOU got out of loop");
         //Check for collision with object
-        return collidedWithObject();
+
+        return crashed;
     }
 
     private boolean collidedWithObject(){
@@ -227,6 +238,14 @@ public class Game {
             }
         }
         playerOne.Draw(g2d);
+        g2d.setColor(Color.white);
+        int labelY = scoreLabelY;
+        g2d.drawString("Score: " + playerScore, 5, labelY);
+        if (isMultiplayer){
+            g2d.setColor(Color.red);
+            labelY += 20;
+            g2d.drawString("Opponent: " + opponentScore, 5, labelY);
+        }
     }
 
     public void usePowerUp(){
@@ -236,10 +255,14 @@ public class Game {
     public void DrawEnd(Graphics2D g2d) {
         Draw(g2d);
         g2d.setColor(Color.white);
-        g2d.drawString("Score: " + playerScore, 5, 15);
+
+        int labelY = scoreLabelY;
+        g2d.drawString("Score: " + playerScore, 5, labelY);
         if (isMultiplayer){
-            g2d.drawString("Opponent: " + opponentScore, 5, 25);
+            labelY += 20;
+            g2d.drawString("Opponent: " + opponentScore, 5, labelY);
         }
+
         g2d.drawString("GAME OVER", GameLogic.frameWidth/2 - 40, GameLogic.frameHeight/2 + 50);
         g2d.drawString("Press any key to restart", GameLogic.frameWidth/2 - 75, GameLogic.frameHeight/2 + 30);
     }

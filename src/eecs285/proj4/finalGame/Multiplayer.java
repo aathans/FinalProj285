@@ -15,6 +15,8 @@ public class Multiplayer {
     String ipAddr;
     int port;
     int opponentScore = 0;
+    int previousOpponentScore = -1;
+    boolean opponentFinished = false;
 
     PrintWriter gameWriter;
     BufferedReader gameReader;
@@ -74,6 +76,7 @@ public class Multiplayer {
     public void receiveUpdate(String score){
 
         // do whatever you want here. This is where the opponent score comes in
+        previousOpponentScore = opponentScore;
         opponentScore = Integer.parseInt(score);
         System.out.println(score);
 
@@ -102,7 +105,14 @@ public class Multiplayer {
                 try {
 
                     String updatedScore = gameReader.readLine();
-                    if(updatedScore == null){
+                    int newScore = -1;
+                    if(updatedScore != null){
+                        newScore = Integer.parseInt(updatedScore);
+                    }
+
+                    if(newScore == -1){
+                        opponentFinished = true;
+                        System.out.println("YOU CRASHED");
                         break;
                     }
                     p.receiveUpdate(updatedScore);
@@ -117,6 +127,10 @@ public class Multiplayer {
 
     public int getOpponentScore(){
         return opponentScore;
+    }
+
+    public boolean isOpponentFinished(){
+        return opponentFinished;
     }
 
 }
