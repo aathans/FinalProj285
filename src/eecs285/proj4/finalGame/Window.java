@@ -1,17 +1,18 @@
 package eecs285.proj4.finalGame;
 
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 /**
  * Created by Alex on 11/17/14.
  */
 public class Window extends JFrame {
     private static JFrame frame = new JFrame();
-
+    JPanel panel;
+    JLabel label;
     private Window(){
         int width = 500;
         int height = 750;
+
 
         frame.setTitle("STREET RACER");
 

@@ -23,7 +23,7 @@ public class Frequency {
 
     public void LoadSettings(){
         try{
-            URL settingsPage = getClass().getResource("/images/settings.png");
+            URL settingsPage = getClass().getResource("/images/frequency.png");
             frequencyImage = ImageIO.read(settingsPage);
         }
         catch(IOException ex){

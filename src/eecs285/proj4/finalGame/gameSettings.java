@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.*;
 
 /**
  * Created by yeshwanthdevabhaktuni on 11/26/14.
@@ -17,6 +18,9 @@ import javax.imageio.ImageIO;
 public class gameSettings{
 
     private BufferedImage settingsImage;
+
+    JPanel panel;
+    JLabel label;
 
     gameSettings(){
         GameLogic.gameState = GameLogic.GameState.SETTINGS1;

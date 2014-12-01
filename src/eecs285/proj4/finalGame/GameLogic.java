@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
+import javax.swing.*;
 
 /**
  * Created by Alex on 11/17/14.
@@ -29,7 +30,7 @@ public class GameLogic extends GameCanvas {
 
     private final long UPDATE_DELAY = nanosPerSecond / FPS;
 
-    public static enum GameState {STARTING, SHOWING, LOADING, MENU, OPTIONS, PLAYING, ENDED, CRASHED, RACE, MULTIPLAYER,SETTINGS,SCORE,QUIT,SETTINGS1,FREQUENCY,CAR,HELP,BACK,FREQUENCY1,CAR1,HELP1,SCORE1}
+    public static enum GameState {STARTING, SHOWING, LOADING, MENU, OPTIONS, PLAYING, ENDED, CRASHED, RACE, MULTIPLAYER,SETTINGS,SCORE,QUIT,SETTINGS1,MULTIPLAYER1,FREQUENCY,CAR,HELP,BACK,FREQUENCY1,CAR1,HELP1,SCORE1,HIGH1,MEDIUM1,LOW1}
 
     public static GameState gameState;
 
@@ -46,7 +47,7 @@ public class GameLogic extends GameCanvas {
 
     private SongPlayer songPlayer;
 
-    private BufferedImage menuScreen1,menuScreen2,menuScreen3,menuScreen4,menuScreen5,settings1,settings2,settings3,settings4,settings5;
+    private BufferedImage menuScreen1,menuScreen2,menuScreen3,menuScreen4,menuScreen5,settings1,settings2,settings3,settings4,settings5,frequency1,frequency2,frequency3;
 
     private Frequency frequencies;
 
@@ -55,6 +56,11 @@ public class GameLogic extends GameCanvas {
     private Help help;
 
     private Scores scores;
+
+    public int frequency;
+
+    public static JPanel panel;
+    public static JLabel label;
 
 
     public GameLogic(){
@@ -125,6 +131,15 @@ public class GameLogic extends GameCanvas {
 
          URL settingsBack = this.getClass().getResource("/images/settings4.png");
          settings4 = ImageIO.read(settingsBack);
+
+         URL frequencyHigh = this.getClass().getResource("/images/frequency1.png");
+         frequency1 = ImageIO.read(frequencyHigh);
+
+         URL frequencyMedium = this.getClass().getResource("/images/frequency2.png");
+         frequency2 = ImageIO.read(frequencyMedium);
+
+         URL frequencyLow = this.getClass().getResource("/images/frequency3.png");
+         frequency3 = ImageIO.read(frequencyLow);
 
      } catch(IOException ex){
          Logger.getLogger(GameLogic.class.getName()).log(Level.SEVERE, null, ex);
@@ -247,6 +262,10 @@ public class GameLogic extends GameCanvas {
                 g2d.setColor(Color.white);
                 g2d.drawImage(menuScreen2,0,0,frameWidth,frameHeight,null);
                 break;
+            case MULTIPLAYER1:
+                g2d.setColor(Color.white);
+                g2d.drawImage(menuScreen2,0,0,frameWidth,frameHeight,null);
+                break;
             case SETTINGS:
                 g2d.setColor(Color.white);
                 g2d.drawImage(menuScreen3,0,0,frameWidth,frameHeight,null);
@@ -261,17 +280,31 @@ public class GameLogic extends GameCanvas {
             case FREQUENCY1:
                 frequencies.Draw(g2d);
                 break;
+            case HIGH1:
+                g2d.setColor(Color.white);
+                g2d.drawImage(frequency1,0,0,frameWidth,frameHeight,null);
+                break;
+            case MEDIUM1:
+                g2d.setColor(Color.white);
+                g2d.drawImage(frequency2,0,0,frameWidth,frameHeight,null);
+                break;
+            case LOW1:
+                g2d.setColor(Color.white);
+                g2d.drawImage(frequency3,0,0,frameWidth,frameHeight,null);
+                break;
             case CAR:
                 g2d.setColor(Color.white);
                 g2d.drawImage(settings2,0,0,frameWidth,frameHeight,null);
                 break;
             case CAR1:
-                //car.
+
+                break;
             case HELP:
                 g2d.setColor(Color.white);
                 g2d.drawImage(settings3,0,0,frameWidth,frameHeight,null);
                 break;
             case HELP1:
+                help.Draw(g2d);
                 break;
             case BACK:
                 g2d.setBackground(Color.white);
@@ -317,6 +350,7 @@ public class GameLogic extends GameCanvas {
             case MENU:
              if (xVal >= 121 && xVal <= 384 && yVal >= 119 && yVal <= 174) {
                 gameState = GameState.RACE;
+                 System.out.println("No!");
              }
              else if (xVal >= 121 && xVal <= 384 && yVal >= 200 && yVal <= 254 ) {
                  gameState = GameState.MULTIPLAYER;
@@ -346,9 +380,33 @@ public class GameLogic extends GameCanvas {
                   gameState = GameState.BACK;
               }
                 break;
-            case FREQUENCY:
+            case FREQUENCY1:
+                if(xVal>=107 && xVal <= 434 && yVal >= 161 && yVal<= 235){
+                   gameState = GameState.HIGH1;
+                }
+                if(xVal>=113 && xVal <= 426 && yVal >= 285 && yVal <= 359){
+                    gameState = GameState.MEDIUM1;
+                }
+                if(xVal>=122 && xVal <= 421 && yVal >= 420 && yVal <= 471){
+                    gameState = GameState.LOW1;
+                }
+                if(xVal >= 107 && xVal <= 434 && yVal >= 558 && yVal <= 614){
+                    gameState = GameState.SETTINGS1;
+                }
                 break;
+            case CAR1:
 
+                break;
+            case HELP1:
+                if(xVal >= 122 && xVal <= 375 && yVal >= 534 && yVal <= 595){
+                    gameState = GameState.SETTINGS1;
+                }
+                break;
+            case SCORE1:
+                if(xVal >= 84 && xVal <= 414 && yVal >= 526 && yVal <= 580){
+                    gameState = GameState.MENU;
+                }
+                break;
          }
     }
 
@@ -379,10 +437,21 @@ public class GameLogic extends GameCanvas {
            case CAR:
                newCars();
                break;
+           case HELP:
+               newHelp();
+               break;
            case BACK:
                gameState = GameState.MENU;
                break;
-
+           case HIGH1:
+               gameState = GameState.SETTINGS1;
+               break;
+            case MEDIUM1:
+                gameState = GameState.SETTINGS1;
+                break;
+            case LOW1:
+                gameState = GameState.SETTINGS1;
+                break;
         }
     }
 
@@ -396,6 +465,11 @@ public class GameLogic extends GameCanvas {
     private void newScores(){
         elapsedTime = 0;
         prevTime = System.nanoTime();
+
+        panel = new JPanel();
+        label = new JLabel("This is it!");
+        panel.add(label);
+        this.add(panel);
 
         scores = new Scores();
     }
@@ -412,6 +486,18 @@ public class GameLogic extends GameCanvas {
         prevTime = System.nanoTime();
 
         car = new Car();
+    }
+
+    private void multiplayer1(){
+        int selectedOption = JOptionPane.showConfirmDialog(null,
+                "Are you sure you want to switch to singlePlayer?",
+                "Choose",
+                JOptionPane.YES_NO_OPTION);
+        if(selectedOption == JOptionPane.YES_OPTION){
+            gameState = GameState.MULTIPLAYER1;
+            return;
+        }
+        gameState = GameState.MENU;
     }
 
     private void newFrequencies(){
