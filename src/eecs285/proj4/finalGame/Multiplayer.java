@@ -16,7 +16,7 @@ public class Multiplayer {
     int port;
     int opponentScore = 0;
     int previousOpponentScore = -1;
-    boolean opponentFinished = false;
+    public boolean opponentFinished = false;
 
     PrintWriter gameWriter;
     BufferedReader gameReader;
@@ -87,6 +87,18 @@ public class Multiplayer {
         gameWriter.flush();
     }
 
+    public void updateFinished(boolean isFinished){
+        opponentFinished = isFinished;
+    }
+
+    public int getOpponentScore(){
+        return opponentScore;
+    }
+
+    public boolean isOpponentFinished(){
+        return opponentFinished;
+    }
+
     public class ReadingThread extends Thread{
 
         BufferedReader gameReader;
@@ -111,8 +123,7 @@ public class Multiplayer {
                     }
 
                     if(newScore == -1){
-                        opponentFinished = true;
-                        System.out.println("YOU CRASHED");
+                        p.updateFinished(true);
                         break;
                     }
                     p.receiveUpdate(updatedScore);
@@ -123,14 +134,6 @@ public class Multiplayer {
             }
             interrupt();
         }
-    }
-
-    public int getOpponentScore(){
-        return opponentScore;
-    }
-
-    public boolean isOpponentFinished(){
-        return opponentFinished;
     }
 
 }
