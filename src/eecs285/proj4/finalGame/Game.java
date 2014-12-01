@@ -63,7 +63,7 @@ public class Game
         loadGame();
         if( isMultiplayer )
         {
-          p = new Multiplayer("35.2.211.11", 2000);
+          p = new Multiplayer("35.2.254.140", 2000);
           p.createConnection();
         }
         GameLogic.gameState = GameLogic.GameState.PLAYING;

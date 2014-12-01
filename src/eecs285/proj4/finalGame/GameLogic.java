@@ -76,6 +76,8 @@ public class GameLogic extends GameCanvas
 
   private DbEntry[] entries;
 
+  private boolean offlineMode;
+
   public GameLogic()
   {
 
@@ -101,7 +103,12 @@ public class GameLogic extends GameCanvas
   {
     isMultiplayer = false;
     conn = Database.establishConnection();
-    entries = Database.populateScores();
+    if(conn != null)
+    {
+      entries = Database.populateScores();
+    }else{
+      offlineMode = true;
+    }
   }
 
   private void loadMenu()
@@ -242,15 +249,21 @@ public class GameLogic extends GameCanvas
           {
             if( game.opponentHasCrashed() )
             {
-              playerScore = game.getPlayerScore();
-              Database.insertScore(playerName, playerScore);
+              if(!offlineMode)
+              {
+                playerScore = game.getPlayerScore();
+                Database.insertScore(playerName, playerScore);
+              }
               gameState = GameState.ENDED;
             }
           }
           else
           {
-            playerScore = game.getPlayerScore();
-            Database.insertScore(playerName, playerScore);
+            if(!offlineMode)
+            {
+              playerScore = game.getPlayerScore();
+              Database.insertScore(playerName, playerScore);
+            }
             gameState = GameState.ENDED;
           }
           break;
@@ -411,14 +424,20 @@ public class GameLogic extends GameCanvas
         }
         else if( xVal >= 121 && xVal <= 384 && yVal >= 200 && yVal <= 254 )
         {
-          isMultiplayer = true;
-          gameState = GameState.MULTIPLAYER;
+          if(!offlineMode)
+          {
+            isMultiplayer = true;
+            gameState = GameState.MULTIPLAYER;
+          }
         }
         else if (xVal >= 121 && xVal <= 384 && yVal >= 286 && yVal <= 341) {
           gameState = GameState.SETTINGS;
         }
         else if(xVal >= 121 && xVal <= 384 && yVal >= 384 && yVal <= 442){
-          gameState = GameState.SCORE;
+          if(!offlineMode)
+          {
+            gameState = GameState.SCORE;
+          }
         }
         else if(xVal>= 2 && xVal <= 231 && yVal >= 660 && yVal <= 708){
           gameState = GameState.QUIT;
@@ -513,9 +532,9 @@ public class GameLogic extends GameCanvas
         Settings();
         break;
       case SCORE:
-        newScores();
-        entries = Database.populateScores();
-        scores.updateHighScores(entries);
+          newScores();
+          entries = Database.populateScores();
+          scores.updateHighScores(entries);
         break;
       case QUIT:
         quitGame();

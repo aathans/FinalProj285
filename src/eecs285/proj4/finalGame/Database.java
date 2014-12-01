@@ -74,6 +74,7 @@ public class Database
     {
       System.out.println("SQLException");
       s.printStackTrace();
+      return null;
     }
     finally
     {
