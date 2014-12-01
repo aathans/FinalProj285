@@ -31,6 +31,7 @@ public class Database {
             System.out.println("Class not found exception");
             e.printStackTrace();
         }
+        System.out.println("Established connection to database.");
         return conn;
     }
 

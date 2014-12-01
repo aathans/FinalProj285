@@ -11,11 +11,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
+import java.sql.Connection;
 
 /**
  * Created by Alex on 11/17/14.
  */
 public class GameLogic extends GameCanvas {
+    public static Connection conn;
 
     public static int frameWidth;
 
@@ -69,6 +71,7 @@ public class GameLogic extends GameCanvas {
 
     private void setup(){
         isMultiplayer = false;
+        conn = Database.establishConnection();
     }
 
     private void loadMenu(){
