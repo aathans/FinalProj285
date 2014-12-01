@@ -14,11 +14,11 @@ import javax.imageio.ImageIO;
  */
 
 
-public class gameSettings{
+public class GameSettings {
 
     private BufferedImage settingsImage;
 
-    gameSettings(){
+    GameSettings(){
         GameLogic.gameState = GameLogic.GameState.SETTINGS1;
         LoadSettings();
     }
