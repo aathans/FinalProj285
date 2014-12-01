@@ -166,9 +166,11 @@ public class Game {
             if(crashed){
                 p.sendUpdate("-1");
             }
+            boolean opponentsFinished = false;
             do {
                 opponentScore = p.getOpponentScore();
-            }while (!p.isOpponentFinished() && crashed);
+                opponentsFinished = p.isOpponentFinished();
+            }while (!opponentsFinished && crashed);
         }
         System.out.println("YOU got out of loop");
         //Check for collision with object
