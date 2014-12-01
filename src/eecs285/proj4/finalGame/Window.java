@@ -10,9 +10,12 @@ public class Window extends JFrame {
     private static JFrame frame = new JFrame();
 
     private Window(){
+        int width = 500;
+        int height = 750;
+
         frame.setTitle("STREET RACER");
 
-        frame.setSize(500, 750);
+        frame.setSize(width,height);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
 
