@@ -96,17 +96,18 @@ public class Multiplayer {
 
         public void run(){
 
-            try{
+            while(true) {
+                try {
 
-                String updatedScore = gameReader.readLine();
-                p.recieveUpdate(updatedScore);
+                    String updatedScore = gameReader.readLine();
+                    p.recieveUpdate(updatedScore);
 
-            } catch (IOException e){
-                e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
         }
     }
-
 
 }

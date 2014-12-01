@@ -150,9 +150,9 @@ public class Game {
                 powerUpUsed = null;
             }
         }
-        System.out.print(isMultiplayer);
+
         if(isMultiplayer){
-            System.out.println("sending");
+
             int currentPlayerScore = playerOne.getScore();
             p.sendUpdate("Other player score: " + currentPlayerScore);
         }
