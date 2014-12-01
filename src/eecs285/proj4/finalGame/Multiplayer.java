@@ -119,6 +119,7 @@ public class Multiplayer {
                         p.updateFinished(true);
                         break;
                     }
+
                     String updatedScore = gameReader.readLine();
 
                     p.receiveUpdate(updatedScore);
