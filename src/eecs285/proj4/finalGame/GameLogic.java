@@ -29,7 +29,7 @@ public class GameLogic extends GameCanvas {
 
     private final long UPDATE_DELAY = nanosPerSecond / FPS;
 
-    public static enum GameState {STARTING, SHOWING, LOADING, MENU, OPTIONS, PLAYING, ENDED, CRASHED, RACE, MULTIPLAYER,SETTINGS,SCORE,QUIT,SETTINGS1}
+    public static enum GameState {STARTING, SHOWING, LOADING, MENU, OPTIONS, PLAYING, ENDED, CRASHED, RACE, MULTIPLAYER, SETTINGS,SCORE,QUIT,SETTINGS1}
 
     public static GameState gameState;
 
@@ -40,7 +40,7 @@ public class GameLogic extends GameCanvas {
 
     private Game game;
 
-    private gameSettings settings;
+    private GameSettings settings;
 
     private BufferedImage menuScreen;
 
@@ -48,6 +48,9 @@ public class GameLogic extends GameCanvas {
 
     private BufferedImage menuScreen1,menuScreen2,menuScreen3,menuScreen4,menuScreen5;
 
+    private Multiplayer p;
+
+    private boolean isMultiplayer;
 
     public GameLogic(){
 
@@ -61,28 +64,11 @@ public class GameLogic extends GameCanvas {
                listenGame();
             }
         };
-
         mainThread.start();
     }
 
-    public static synchronized void playSound(final String url) {
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    Clip backgroundSong = AudioSystem.getClip();
-                    AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-                            this.getClass().getResourceAsStream(url));
-                    backgroundSong.open(inputStream);
-                    backgroundSong.loop(Clip.LOOP_CONTINUOUSLY);
-                } catch (Exception e) {
-                    System.out.println("Error with background song: " + e.getMessage());
-                }
-            }
-        }).start();
-    }
-
     private void setup(){
-
+        isMultiplayer = false;
     }
 
     private void loadMenu(){
@@ -148,6 +134,11 @@ public class GameLogic extends GameCanvas {
                 case MENU:
                     break;
                 case OPTIONS:
+                    break;
+                case MULTIPLAYER:
+                    repaint();
+                    isMultiplayer = true;
+                    newGame();
                     break;
                 case PLAYING:
                     elapsedTime += System.nanoTime() - prevTime;
@@ -225,7 +216,9 @@ public class GameLogic extends GameCanvas {
                 break;
             case MULTIPLAYER:
                 g2d.setColor(Color.white);
-                g2d.drawImage(menuScreen2,0,0,frameWidth,frameHeight,null);
+                g2d.drawImage(menuScreen2, 0, 0, frameWidth, frameHeight, null);
+                g2d.setColor(Color.black);
+                g2d.drawString("Connecting...", frameWidth/2 - 30, frameHeight/2);
                 break;
             case SETTINGS:
                 g2d.setColor(Color.white);
@@ -303,7 +296,7 @@ public class GameLogic extends GameCanvas {
                newGame();
                break;
            case MULTIPLAYER:
-
+               //newGame();
                break;
            case SCORE:
 
@@ -321,14 +314,14 @@ public class GameLogic extends GameCanvas {
         elapsedTime = 0;
         prevTime = System.nanoTime();
 
-        game = new Game();
+        game = new Game(isMultiplayer);
     }
 
     private void Settings(){
         elapsedTime = 0;
         prevTime = System.nanoTime();
 
-        settings = new gameSettings();
+        settings = new GameSettings();
     }
 
     private void restart(){
@@ -344,7 +337,6 @@ public class GameLogic extends GameCanvas {
     public void keyReleasedLogic(KeyEvent event){
         switch(gameState){
             case MENU:
-                newGame();
                 break;
             case ENDED:
                 //restart();

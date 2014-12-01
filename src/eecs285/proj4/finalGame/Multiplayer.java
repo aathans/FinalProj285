@@ -1,13 +1,11 @@
 package eecs285.proj4.finalGame;
 
-/**
- * Created by Sid on 11/30/14.
- */
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -34,26 +32,25 @@ public class Multiplayer {
             Socket sock = new Socket(InetAddress.getByName(ipAddr), port);
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-            System.out.println("HERE3");
+
             String command = reader.readLine();
-            System.out.println("VVVV");
-            System.out.println("Value is: " + command);
 
             Socket gameSocket;
 
             if(command.equals("CREATE")){
 
                 // creates a listening socket and accepts the first incoming connection
-                ServerSocket servSocket = new ServerSocket(port);
+                ServerSocket servSocket = new ServerSocket();
+                servSocket.setReuseAddress(true);
+                servSocket.bind(new InetSocketAddress(4000));
                 gameSocket = servSocket.accept();
-                System.out.println("Creating");
                 servSocket.close();
 
             } else {
 
                 // connects to the specified IP address
-                gameSocket = new Socket(InetAddress.getByName(reader.readLine()), port);
-                System.out.println("Connecting");
+                Thread.sleep(1000);
+                gameSocket = new Socket(InetAddress.getByName(reader.readLine().substring(1)), 4000);
 
 
             }
@@ -67,18 +64,21 @@ public class Multiplayer {
 
         } catch(IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
     }
 
-    public void receiveUpdate(String score){
+    public void recieveUpdate(String score){
 
         // do whatever you want here. This is where the opponent score comes in
+        System.out.println(score);
 
     }
 
     public void sendUpdate(String update){
-        gameWriter.write(update);
+        gameWriter.write(update + "\n");
         gameWriter.flush();
     }
 
@@ -96,31 +96,17 @@ public class Multiplayer {
 
         public void run(){
 
-            while(true)
-            {
-                try{
+            try{
 
-                    String updatedScore = gameReader.readLine();
-                    p.sendUpdate(updatedScore);
+                String updatedScore = gameReader.readLine();
+                p.recieveUpdate(updatedScore);
 
-                } catch (IOException e){
-                    e.printStackTrace();
-                }
+            } catch (IOException e){
+                e.printStackTrace();
             }
 
         }
     }
 
-
-    public static void main(String[] args){
-
-        System.out.println("HERE1");
-
-        Multiplayer p = new Multiplayer("127.0.0.1", 2000);
-        System.out.println("HERE2");
-
-        p.createConnection();
-
-    }
 
 }

@@ -20,6 +20,10 @@ public class Game {
 
     private Player playerOne;
 
+    private Multiplayer p;
+
+    private boolean isMultiplayer;
+
     private Obstacle[] obstacleList;
 
     private PowerUp[] powerUpList;
@@ -36,14 +40,20 @@ public class Game {
     private PowerUp powerUpUsed;
     private int lineSpeed;
 
-    public Game(){
+    public Game(final boolean inIsMultiplayer){
         GameLogic.gameState = GameLogic.GameState.LOADING;
-
+        isMultiplayer = inIsMultiplayer;
+        System.out.println("is multiplayer" + isMultiplayer);
         Thread initializeGame = new Thread(){
             @Override
             public void run() {
                 setup();
                 loadGame();
+                if(isMultiplayer){
+                    p = new Multiplayer("35.2.196.23", 2000);
+                    p.createConnection();
+                    p.sendUpdate("testing. If the program terminates here it works");
+                }
                 GameLogic.gameState = GameLogic.GameState.PLAYING;
             }
         };
@@ -140,7 +150,12 @@ public class Game {
                 powerUpUsed = null;
             }
         }
-
+        System.out.print(isMultiplayer);
+        if(isMultiplayer){
+            System.out.println("sending");
+            int currentPlayerScore = playerOne.getScore();
+            p.sendUpdate("Other player score: " + currentPlayerScore);
+        }
         //Check for collision with object
         return collidedWithObject();
     }

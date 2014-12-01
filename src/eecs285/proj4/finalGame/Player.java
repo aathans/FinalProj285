@@ -170,6 +170,10 @@ public class Player {
         return yPos;
     }
 
+    public int getScore(){
+        return score;
+    }
+
     public int getCarWidth(){
         return carWidth;
     }
