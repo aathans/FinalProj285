@@ -104,7 +104,6 @@ public class Game {
     public void addPowerUp(){
         for(int i = 0; i < 6; i++){
             if(!powerUpList[i].inPlay){
-                System.out.println(i);
                 powerUpList[i].inPlay = true;
                 break;
             }

@@ -146,7 +146,6 @@ public class Player {
     public PowerUp usePowerUp(){
         if(hasPowerUp) {
             MissilePowerUp missile = (MissilePowerUp) currentPowerUp;
-            System.out.println("x: " + xPos + " y: " + yPos);
             missile.setPosition(xPos, yPos);
             missile.wasUsed = true;
             hasPowerUp = false;
