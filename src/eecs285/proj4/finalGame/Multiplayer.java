@@ -14,6 +14,7 @@ public class Multiplayer {
 
     String ipAddr;
     int port;
+    int opponentScore = 0;
 
     PrintWriter gameWriter;
     BufferedReader gameReader;
@@ -70,9 +71,10 @@ public class Multiplayer {
 
     }
 
-    public void recieveUpdate(String score){
+    public void receiveUpdate(String score){
 
         // do whatever you want here. This is where the opponent score comes in
+        opponentScore = Integer.parseInt(score);
         System.out.println(score);
 
     }
@@ -100,14 +102,21 @@ public class Multiplayer {
                 try {
 
                     String updatedScore = gameReader.readLine();
-                    p.recieveUpdate(updatedScore);
+                    if(updatedScore == null){
+                        break;
+                    }
+                    p.receiveUpdate(updatedScore);
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-
+            interrupt();
         }
+    }
+
+    public int getOpponentScore(){
+        return opponentScore;
     }
 
 }

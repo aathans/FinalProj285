@@ -124,9 +124,7 @@ public class Player {
     }
 
     public void Draw(Graphics2D g2d){
-        g2d.setColor(Color.white);
-        g2d.drawString("Score: " + score, 5, 15 );
-        g2d.drawString("High Score: " + highScore, 5, 35);
+        //g2d.drawString("High Score: " + highScore, 5, 35);
         g2d.drawImage(carImage, xPos, yPos, carWidth, carHeight, null);
 
         if(crashed){

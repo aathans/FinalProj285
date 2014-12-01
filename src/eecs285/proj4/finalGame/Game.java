@@ -3,7 +3,7 @@ package eecs285.proj4.finalGame;
 
 import sun.audio.AudioPlayer;
 
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -23,6 +23,10 @@ public class Game {
     private Multiplayer p;
 
     private boolean isMultiplayer;
+
+    private int playerScore = 0;
+
+    private int opponentScore = 0;
 
     private Obstacle[] obstacleList;
 
@@ -152,10 +156,11 @@ public class Game {
         }
 
         if(isMultiplayer){
-
-            int currentPlayerScore = playerOne.getScore();
-            p.sendUpdate("Other player score: " + currentPlayerScore);
+            playerScore = playerOne.getScore();
+            p.sendUpdate("Other player score: " + playerScore);
+            opponentScore = p.getOpponentScore();
         }
+
         //Check for collision with object
         return collidedWithObject();
     }
@@ -228,11 +233,15 @@ public class Game {
         powerUpUsed = playerOne.usePowerUp();
     }
 
-    public void DrawEnd(Graphics2D g2d){
+    public void DrawEnd(Graphics2D g2d) {
         Draw(g2d);
+        g2d.setColor(Color.white);
+        g2d.drawString("Score: " + playerScore, 5, 15);
+        if (isMultiplayer){
+            g2d.drawString("Opponent: " + opponentScore, 5, 25);
+        }
         g2d.drawString("GAME OVER", GameLogic.frameWidth/2 - 40, GameLogic.frameHeight/2 + 50);
         g2d.drawString("Press any key to restart", GameLogic.frameWidth/2 - 75, GameLogic.frameHeight/2 + 30);
-
     }
 
     public void DrawCrashed(Graphics2D g2d){
