@@ -29,7 +29,7 @@ public class GameLogic extends GameCanvas {
 
     private final long UPDATE_DELAY = nanosPerSecond / FPS;
 
-    public static enum GameState {STARTING, SHOWING, LOADING, MENU, OPTIONS, PLAYING, ENDED, CRASHED}
+    public static enum GameState {STARTING, SHOWING, LOADING, MENU, OPTIONS, PLAYING, ENDED, CRASHED, RACE, MULTIPLAYER,SETTINGS,SCORE,QUIT,SETTINGS1}
 
     public static GameState gameState;
 
@@ -40,9 +40,14 @@ public class GameLogic extends GameCanvas {
 
     private Game game;
 
+    private gameSettings settings;
+
     private BufferedImage menuScreen;
 
     private SongPlayer songPlayer;
+
+    private BufferedImage menuScreen1,menuScreen2,menuScreen3,menuScreen4,menuScreen5;
+
 
     public GameLogic(){
 
@@ -83,8 +88,23 @@ public class GameLogic extends GameCanvas {
     private void loadMenu(){
 
      try{
-         URL menuScreenPath = this.getClass().getResource("/images/MenuScreen.png");
+         URL menuScreenPath = this.getClass().getResource("/images/menuScreen.png");
          menuScreen = ImageIO.read(menuScreenPath);
+
+         URL menuScreenRace = this.getClass().getResource("/images/menuScreen1.png");
+         menuScreen1 = ImageIO.read(menuScreenRace);
+
+         URL menuScreenMultiplayer = this.getClass().getResource("/images/menuScreen2.png");
+         menuScreen2 = ImageIO.read(menuScreenMultiplayer);
+
+         URL menuScreenSettings = this.getClass().getResource("/images/menuScreen5.png");
+         menuScreen3 = ImageIO.read(menuScreenSettings);
+
+         URL menuScreenScores = this.getClass().getResource("/images/menuScreen3.png");
+         menuScreen4 = ImageIO.read(menuScreenScores);
+
+         URL menuScreenQuit = this.getClass().getResource("/images/menuScreen4.png");
+         menuScreen5 = ImageIO.read(menuScreenQuit);
 
      } catch(IOException ex){
          Logger.getLogger(GameLogic.class.getName()).log(Level.SEVERE, null, ex);
@@ -199,6 +219,29 @@ public class GameLogic extends GameCanvas {
                 g2d.setColor(Color.white);
                 g2d.drawImage(menuScreen,0,0,frameWidth,frameHeight,null);
                 break;
+            case RACE:
+                g2d.setColor(Color.white);
+                g2d.drawImage(menuScreen1,0,0,frameWidth,frameHeight,null);
+                break;
+            case MULTIPLAYER:
+                g2d.setColor(Color.white);
+                g2d.drawImage(menuScreen2,0,0,frameWidth,frameHeight,null);
+                break;
+            case SETTINGS:
+                g2d.setColor(Color.white);
+                g2d.drawImage(menuScreen3,0,0,frameWidth,frameHeight,null);
+                break;
+            case SETTINGS1:
+                settings.Draw(g2d);
+                break;
+            case SCORE:
+                g2d.setColor(Color.white);
+                g2d.drawImage(menuScreen4,0,0,frameWidth,frameHeight,null);
+                break;
+            case QUIT:
+                g2d.setColor(Color.white);
+                g2d.drawImage(menuScreen5,0,0,frameWidth,frameHeight,null);
+                break;
             case OPTIONS:
                 break;
             case PLAYING:
@@ -214,22 +257,64 @@ public class GameLogic extends GameCanvas {
         }
     }
 
+
     @Override
-    public void mouseClicked(MouseEvent event){
+    public void mousePressed(MouseEvent event){
         Point b = mousePos();
         int xVal = (int) b.getX();
         int yVal = (int) b.getY();
 
-        if(xVal >= 100 && yVal >= 160 && yVal <= 215 && xVal <= 400) {
-            //SongPlayer.pauseSound();
-            newGame();
-        }else if(xVal >= 100 && yVal >= 245 && yVal <= 295 && xVal <= 400){
-            //songPlayer.playSound();
-            //newSettings();
-        }else if(xVal >= 20 && yVal >= 680 && yVal <= 712 && xVal <= 200){
-            quitGame();
-        }
+        System.out.println(xVal);
+        System.out.println(yVal);
 
+        switch(gameState) {
+            case MENU:
+             if (xVal >= 121 && xVal <= 384 && yVal >= 119 && yVal <= 174) {
+                gameState = GameState.RACE;
+             }
+             else if (xVal >= 121 && xVal <= 384 && yVal >= 200 && yVal <= 254 ) {
+                 gameState = GameState.MULTIPLAYER;
+             }
+             else if (xVal >= 121 && xVal <= 384 && yVal >= 286 && yVal <= 341) {
+                 gameState = GameState.SETTINGS;
+             }
+             else if(xVal >= 121 && xVal <= 384 && yVal >= 384 && yVal <= 442){
+                gameState = GameState.SCORE;
+             }
+             else if(xVal>= 2 && xVal <= 231 && yVal >= 660 && yVal <= 708){
+                 gameState = GameState.QUIT;
+             }
+             break;
+
+            case SETTINGS1:
+
+                break;
+
+         }
+    }
+
+    public void mouseReleased(MouseEvent event){
+        Point b = mousePos();
+        int xVal = (int) b.getX();
+        int yVal = (int) b.getY();
+
+        switch(gameState) {
+           case RACE:
+               newGame();
+               break;
+           case MULTIPLAYER:
+
+               break;
+           case SCORE:
+
+               break;
+           case SETTINGS:
+               Settings();
+               break;
+           case QUIT:
+               quitGame();
+               break;
+        }
     }
 
     private void newGame(){
@@ -237,6 +322,13 @@ public class GameLogic extends GameCanvas {
         prevTime = System.nanoTime();
 
         game = new Game();
+    }
+
+    private void Settings(){
+        elapsedTime = 0;
+        prevTime = System.nanoTime();
+
+        settings = new gameSettings();
     }
 
     private void restart(){
