@@ -9,21 +9,27 @@ import java.util.logging.Logger;
 /**
  * Created by Alex on 11/18/14.
  */
-public class CarObstacle extends Obstacle {
+public class CarObstacle extends Obstacle
+{
 
-    CarObstacle(){
-        super();
-        setupCar();
-    }
+  CarObstacle()
+  {
+    super();
+    setupCar();
+  }
 
-    private void setupCar(){
-        try {
-            URL carPath = this.getClass().getResource("/images/blue_car_mini.png");
-            obstacleImage = ImageIO.read(carPath);
-            obstacleHeight = obstacleImage.getHeight();
-            obstacleWidth = obstacleImage.getWidth();
-        } catch(IOException ex){
-            Logger.getLogger(CarObstacle.class.getName()).log(Level.SEVERE, null, ex);
-        }
+  private void setupCar()
+  {
+    try
+    {
+      URL carPath = this.getClass().getResource("/images/blue_car_mini.png");
+      obstacleImage = ImageIO.read(carPath);
+      obstacleHeight = obstacleImage.getHeight();
+      obstacleWidth = obstacleImage.getWidth();
     }
+    catch( IOException ex )
+    {
+      Logger.getLogger(CarObstacle.class.getName()).log(Level.SEVERE, null, ex);
+    }
+  }
 }

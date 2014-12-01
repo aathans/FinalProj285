@@ -14,74 +14,44 @@ import javax.imageio.ImageIO;
  */
 
 
-public class GameSettings {
+public class GameSettings
+{
 
-    private BufferedImage settingsImage;
+  private BufferedImage settingsImage;
 
-    GameSettings(){
-        GameLogic.gameState = GameLogic.GameState.SETTINGS1;
-        LoadSettings();
+  GameSettings()
+  {
+    GameLogic.gameState = GameLogic.GameState.SETTINGS1;
+    LoadSettings();
+  }
+
+
+  public void LoadSettings()
+  {
+    try
+    {
+      URL settingsPage = getClass()
+          .getResource("/images/settings.png");
+      settingsImage = ImageIO.read(settingsPage);
+
     }
-
-
-    public void LoadSettings(){
-        try{
-            URL settingsPage = getClass().getResource("/images/settingsScreenPage.png");
-            settingsImage = ImageIO.read(settingsPage);
-
-        }
-        catch(IOException ex){
-            Logger.getLogger(GameLogic.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    catch( IOException ex )
+    {
+      Logger.getLogger(GameLogic.class.getName()).log(Level.SEVERE, null, ex);
     }
+  }
 
-    public void backToMain(){
-        GameLogic.gameState = GameLogic.GameState.MENU;
-    }
+  public void backToMain()
+  {
+    GameLogic.gameState = GameLogic.GameState.MENU;
+  }
 
-    public void Draw(Graphics2D g2d){
-        g2d.drawImage(settingsImage,0,0,GameLogic.frameWidth,GameLogic.frameHeight,null);
-    }
+  public void Draw(Graphics2D g2d)
+  {
+    g2d.drawImage(settingsImage, 0, 0, GameLogic.frameWidth,
+        GameLogic.frameHeight, null);
+  }
 }
 
 
-/*
 
-public class gameSettings {
-
-    private BufferedImage settingsImage;
-
-    gameSettings(){
-        GameLogic.gameState = GameLogic.GameState.Settings;
-        setup();
-        LoadSettings();
-        //UpdateSettings();
-    }
-
-    public void setup(){
-    }
-
-    public void LoadSettings(){
-        try{
-           URL settingsPage = getClass().getResource("/images/settingsScreenPage.png");
-            settingsImage = ImageIO.read(settingsPage);
-
-        }
-        catch(IOException ex){
-            Logger.getLogger(GameLogic.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }*/
-   /* public void UpdateSettings(){
-        if()
-    }*/
-/*
-    public void backToMain(){
-        GameLogic.gameState = GameLogic.GameState.MENU;
-    }
-
-    public void Draw(Graphics2D g2d){
-        g2d.drawImage(settingsImage,0,0,GameLogic.frameWidth,GameLogic.frameHeight,null);
-
-    }
-
-}*/
