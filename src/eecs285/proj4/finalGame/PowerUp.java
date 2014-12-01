@@ -6,6 +6,8 @@ import java.util.Random;
 
 /**
  * Created by Alex on 11/28/14.
+ * Base class for power ups.  Can be used in future versions if there
+ * is more than one power up.
  */
 public class PowerUp
 {

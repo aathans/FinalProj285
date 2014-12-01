@@ -10,6 +10,8 @@ import javax.imageio.ImageIO;
 
 /**
  * Created by yeshwanthdevabhaktuni on 11/30/14.
+ * The screen navigated to from the main menu called frequencies.  This
+ * can change the rate at which powerups are created in the game.
  */
 public class Frequency {
 

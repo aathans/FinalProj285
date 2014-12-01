@@ -17,6 +17,7 @@ import javax.imageio.ImageIO;
 
 /**
  * Created by Alex on 11/17/14.
+ * Contains all the attributes of the player
  */
 public class Player
 {

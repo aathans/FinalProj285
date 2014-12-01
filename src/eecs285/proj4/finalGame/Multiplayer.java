@@ -10,6 +10,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 
+/**
+ * Created by Alex on 11/28/14
+ * Responsible for setting up the network and
+ * communication between the two players.
+ */
 public class Multiplayer
 {
 

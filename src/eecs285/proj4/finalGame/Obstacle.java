@@ -6,6 +6,8 @@ import java.util.Random;
 
 /**
  * Created by Alex on 11/18/14.
+ * The base class for obstacles that can end the game if a player collides
+ * with them.
  */
 public class Obstacle
 {

@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 /**
  * Created by Alex on 11/18/14.
+ * The wall obstacle that can collide with a player
  */
 public class WallObstacle extends Obstacle
 {

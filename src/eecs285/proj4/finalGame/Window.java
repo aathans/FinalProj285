@@ -4,6 +4,7 @@ import javax.swing.*;
 
 /**
  * Created by Alex on 11/17/14.
+ * The main window, creates a new GameLogic object.
  */
 public class Window extends JFrame
 {

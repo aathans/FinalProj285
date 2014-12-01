@@ -6,6 +6,7 @@ import javax.sound.sampled.Clip;
 
 /**
  * Created by Alex on 11/29/14.
+ * Plays a song in the background on a background thread.
  */
 public class SongPlayer
 {

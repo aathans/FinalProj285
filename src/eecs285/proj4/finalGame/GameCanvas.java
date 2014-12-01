@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 
 /**
  * Created by Alex on 11/17/14.
+ * GameCanvas is a JPanel that can handle both keyboard and mouse inputs.
  */
 abstract class GameCanvas extends JPanel implements KeyListener, MouseListener
 {

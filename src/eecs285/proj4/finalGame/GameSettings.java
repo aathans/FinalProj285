@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 
 /**
  * Created by yeshwanthdevabhaktuni on 11/26/14.
+ * The settings screen which can be navigated to from the main menu.
  */
 
 

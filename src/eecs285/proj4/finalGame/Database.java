@@ -3,9 +3,9 @@ package eecs285.proj4.finalGame;
 import java.sql.*;
 
 
-/*
+/**
  * Database is responsible for connecting and making queries to the
- * MySql database
+ * MySql database to get the high scores.
  */
 public class Database
 {

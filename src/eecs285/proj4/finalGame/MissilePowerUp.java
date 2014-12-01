@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 /**
  * Created by Alex on 11/28/14.
+ * A missile power up that can be used to destroy oncoming objacles.
  */
 public class MissilePowerUp extends PowerUp
 {

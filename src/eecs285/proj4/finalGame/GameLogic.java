@@ -15,6 +15,8 @@ import java.sql.Connection;
 
 /**
  * Created by Alex on 11/17/14.
+ * GameLogic is responsible for controlling all the functionality of
+ * the game.  It creates a main thread that waits for user input.
  */
 public class GameLogic extends GameCanvas
 {
@@ -87,6 +89,9 @@ public class GameLogic extends GameCanvas
     songPlayer = new SongPlayer("/FuzzionOutlaws.wav");
 
     playerName = JOptionPane.showInputDialog("Enter a username:");
+    if(playerName == null){
+      System.exit(1);
+    }
 
     Thread mainThread = new Thread()
     {

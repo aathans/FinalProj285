@@ -1,5 +1,9 @@
 package eecs285.proj4.finalGame;
 
+
+/**
+ * The database entry for user's scores in Road Racer.
+ */
 public class DbEntry
 {
   private String user;

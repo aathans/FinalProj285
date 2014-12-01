@@ -9,6 +9,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
  * Created by yeshwanthdevabhaktuni on 11/30/14.
+ * The car colour screen navigated to from the settings menu.
+ * Can choose the colour of the players car from here.
  */
 public class Car {
 

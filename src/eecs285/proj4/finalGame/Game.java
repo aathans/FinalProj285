@@ -11,6 +11,8 @@ import javax.imageio.ImageIO;
 
 /**
  * Created by Alex on 11/17/14.
+ * Game contains all the properties of the racing game and handles the
+ * player.
  */
 public class Game
 {

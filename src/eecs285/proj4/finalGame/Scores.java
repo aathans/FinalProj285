@@ -10,6 +10,8 @@ import java.util.logging.Logger;
 
 /**
  * Created by Alex on 12/1/14.
+ * The score screen when navigated to from the main menu.  Receives
+ * the most up to date scores and displays them.
  */
 public class Scores
 {

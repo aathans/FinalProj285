@@ -8,6 +8,8 @@ import java.util.logging.Logger;
 
 /**
  * Created by Alex on 11/18/14.
+ * The blue cars that come towards a player when they are racing.
+ * These obstacles can collide with the player and end the game.
  */
 public class CarObstacle extends Obstacle
 {

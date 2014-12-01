@@ -10,6 +10,8 @@ import java.util.logging.Logger;
 
 /**
  * Created by yeshwanthdevabhaktuni on 11/30/14.
+ * The help screen displayed when a user navigates to it from the main
+ * menu.
  */
 public class Help {
   private BufferedImage help;
