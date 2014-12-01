@@ -168,8 +168,15 @@ public class GameLogic extends GameCanvas {
                 case ENDED:
                     break;
                 case CRASHED:
-                    restart();
-                    gameState = GameState.ENDED;
+                    if(isMultiplayer) {
+                        if(game.opponentHasCrashed()){
+                            restart();
+                            gameState = GameState.ENDED;
+                        }
+                    }else {
+                        restart();
+                        gameState = GameState.ENDED;
+                    }
                     break;
 
             }

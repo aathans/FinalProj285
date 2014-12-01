@@ -140,14 +140,6 @@ public class Game {
     }
 
     public boolean updateGame(){
-        if(isMultiplayer && playerCrashed && !opponentCrashed){
-            opponentScore = p.getOpponentScore();
-            opponentCrashed = p.isOpponentFinished();
-            return false;
-        } else if(isMultiplayer && playerCrashed && opponentCrashed){
-            return true;
-        }
-
         playerOne.update();
         lineSpeed = playerOne.getSpeedY();
 
@@ -179,11 +171,7 @@ public class Game {
                 p.sendUpdate("-1");
                 opponentScore = p.getOpponentScore();
                 opponentCrashed = p.isOpponentFinished();
-                if(!opponentCrashed){
-                    return false;
-                }
             }
-
         }
 
         return crashed;
@@ -223,6 +211,13 @@ public class Game {
             }
         }
         return -1;
+    }
+
+    public boolean opponentHasCrashed(){
+        if(!opponentCrashed){
+            opponentScore = p.getOpponentScore();
+        }
+        return opponentCrashed;
     }
 
     public void Draw(Graphics2D g2d){
