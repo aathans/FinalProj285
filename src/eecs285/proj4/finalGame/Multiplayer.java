@@ -77,6 +77,7 @@ public class Multiplayer {
 
         // do whatever you want here. This is where the opponent score comes in
         previousOpponentScore = opponentScore;
+
         opponentScore = Integer.parseInt(score);
         System.out.println(score);
 
@@ -92,7 +93,7 @@ public class Multiplayer {
     }
 
     public int getOpponentScore(){
-        return opponentScore;
+        return (opponentScore == -1) ? previousOpponentScore : opponentScore;
     }
 
     public boolean isOpponentFinished(){
@@ -115,23 +116,20 @@ public class Multiplayer {
 
             while(true) {
                 try {
-
-                    String updatedScore = gameReader.readLine();
-                    int newScore = -1;
-                    if(updatedScore != null){
-                        newScore = Integer.parseInt(updatedScore);
-                    }
-
-                    if(newScore == -1){
+                    if(opponentScore == -1){
                         p.updateFinished(true);
                         break;
                     }
+                    String updatedScore = gameReader.readLine();
+
                     p.receiveUpdate(updatedScore);
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                System.out.println("running");
             }
+            System.out.println("interrupted");
             interrupt();
         }
     }

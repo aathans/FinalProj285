@@ -28,7 +28,11 @@ public class Game {
 
     private int playerScore = 0;
 
+    private boolean playerCrashed = false;
+
     private int opponentScore = 0;
+
+    private boolean opponentCrashed = false;
 
     private Obstacle[] obstacleList;
 
@@ -136,6 +140,14 @@ public class Game {
     }
 
     public boolean updateGame(){
+        if(isMultiplayer && playerCrashed && !opponentCrashed){
+            opponentScore = p.getOpponentScore();
+            opponentCrashed = p.isOpponentFinished();
+            return false;
+        } else if(isMultiplayer && playerCrashed && opponentCrashed){
+            return true;
+        }
+
         playerOne.update();
         lineSpeed = playerOne.getSpeedY();
 
@@ -165,15 +177,14 @@ public class Game {
             p.sendUpdate(pScore);
             if(crashed){
                 p.sendUpdate("-1");
-            }
-            boolean opponentsFinished = false;
-            do {
                 opponentScore = p.getOpponentScore();
-                opponentsFinished = p.isOpponentFinished();
-            }while (!opponentsFinished && crashed);
+                opponentCrashed = p.isOpponentFinished();
+                if(!opponentCrashed){
+                    return false;
+                }
+            }
+
         }
-        System.out.println("YOU got out of loop");
-        //Check for collision with object
 
         return crashed;
     }
