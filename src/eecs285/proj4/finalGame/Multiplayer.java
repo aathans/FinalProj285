@@ -79,7 +79,6 @@ public class Multiplayer {
         previousOpponentScore = opponentScore;
 
         opponentScore = Integer.parseInt(score);
-        System.out.println(score);
 
     }
 
@@ -127,9 +126,7 @@ public class Multiplayer {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                System.out.println("running");
             }
-            System.out.println("interrupted");
             interrupt();
         }
     }

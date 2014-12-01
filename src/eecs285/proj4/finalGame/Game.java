@@ -167,10 +167,11 @@ public class Game {
         if(isMultiplayer){
             String pScore = String.valueOf(playerScore);
             p.sendUpdate(pScore);
+            opponentScore = p.getOpponentScore();
+            opponentCrashed = p.isOpponentFinished();
             if(crashed){
                 p.sendUpdate("-1");
-                opponentScore = p.getOpponentScore();
-                opponentCrashed = p.isOpponentFinished();
+                lineSpeed = 0;
             }
         }
 
@@ -216,6 +217,7 @@ public class Game {
     public boolean opponentHasCrashed(){
         if(!opponentCrashed){
             opponentScore = p.getOpponentScore();
+            opponentCrashed = p.isOpponentFinished();
         }
         return opponentCrashed;
     }
@@ -269,10 +271,17 @@ public class Game {
         if (isMultiplayer){
             labelY += 20;
             g2d.drawString("Opponent: " + opponentScore, 5, labelY);
+            if(playerScore > opponentScore){
+                g2d.drawString("YOU WON!", GameLogic.frameWidth/2 - 30, GameLogic.frameHeight/2);
+            }else if(playerScore < opponentScore){
+                g2d.drawString("YOU LOST!", GameLogic.frameWidth/2 - 30, GameLogic.frameHeight/2);
+            }else{
+                g2d.drawString("YOU TIED!", GameLogic.frameWidth/2 - 30, GameLogic.frameHeight/2);
+            }
+        }else {
+            g2d.drawString("GAME OVER", GameLogic.frameWidth / 2 - 40, GameLogic.frameHeight / 2 + 50);
+            g2d.drawString("Press any key to restart", GameLogic.frameWidth / 2 - 75, GameLogic.frameHeight / 2 + 30);
         }
-
-        g2d.drawString("GAME OVER", GameLogic.frameWidth/2 - 40, GameLogic.frameHeight/2 + 50);
-        g2d.drawString("Press any key to restart", GameLogic.frameWidth/2 - 75, GameLogic.frameHeight/2 + 30);
     }
 
     public void DrawCrashed(Graphics2D g2d){
@@ -280,8 +289,12 @@ public class Game {
         Draw(g2d);
         playerOne.reset();
         lineSpeed = 0;
-        g2d.drawString("CRASHED", GameLogic.frameWidth/2 - 30, GameLogic.frameHeight/2 + 50);
-        g2d.drawString("Press any key to restart", GameLogic.frameWidth/2 - 75, GameLogic.frameHeight/2 + 30);
+        if(!isMultiplayer) {
+            g2d.drawString("CRASHED", GameLogic.frameWidth / 2 - 30, GameLogic.frameHeight / 2 + 50);
+            g2d.drawString("Press any key to restart", GameLogic.frameWidth / 2 - 75, GameLogic.frameHeight / 2 + 30);
+        }else{
+            g2d.drawString("Waiting for opponent to finish", GameLogic.frameWidth/2 - 75, GameLogic.frameHeight/2);
+        }
 
     }
 }

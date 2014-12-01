@@ -166,10 +166,18 @@ public class GameLogic extends GameCanvas {
 
                     break;
                 case ENDED:
+                    repaint();
+                    try{
+                        Thread.sleep(3000);
+                    }catch (InterruptedException ex){
+
+                    }
+                    gameState = GameState.MENU;
                     break;
                 case CRASHED:
                     if(isMultiplayer) {
                         if(game.opponentHasCrashed()){
+                            System.out.println("detected opp crash");
                             restart();
                             gameState = GameState.ENDED;
                         }
@@ -250,6 +258,7 @@ public class GameLogic extends GameCanvas {
                 break;
             case ENDED:
                 game.DrawEnd(g2d);
+                g2d.drawString("ENDED", 100, 100);
                 break;
             case CRASHED:
                 game.DrawCrashed(g2d);
@@ -370,7 +379,9 @@ public class GameLogic extends GameCanvas {
                 }catch(InterruptedException e){
 
                 }
-                restart();
+                if(!isMultiplayer) {
+                    restart();
+                }
                 break;
         }
     }
