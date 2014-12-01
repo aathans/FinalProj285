@@ -30,7 +30,7 @@ public class GameLogic extends GameCanvas {
 
     private final long UPDATE_DELAY = nanosPerSecond / FPS;
 
-    public static enum GameState {STARTING, SHOWING, LOADING, MENU, OPTIONS, PLAYING, ENDED, CRASHED, RACE, MULTIPLAYER,SETTINGS,SCORE,QUIT,SETTINGS1,MULTIPLAYER1,FREQUENCY,CAR,HELP,BACK,FREQUENCY1,CAR1,HELP1,SCORE1,HIGH1,MEDIUM1,LOW1}
+    public static enum GameState {STARTING, SHOWING, LOADING, MENU, OPTIONS, PLAYING, ENDED, CRASHED, RACE, MULTIPLAYER,SETTINGS,SCORE,QUIT,SETTINGS1,MULTIPLAYER1,FREQUENCY,CAR,HELP,BACK,FREQUENCY1,CAR1,HELP1,SCORE1,HIGH1,MEDIUM1,LOW1,YELLOW,GREEN,RED}
 
     public static GameState gameState;
 
@@ -47,7 +47,7 @@ public class GameLogic extends GameCanvas {
 
     private SongPlayer songPlayer;
 
-    private BufferedImage menuScreen1,menuScreen2,menuScreen3,menuScreen4,menuScreen5,settings1,settings2,settings3,settings4,settings5,frequency1,frequency2,frequency3;
+    private BufferedImage menuScreen1,menuScreen2,menuScreen3,menuScreen4,menuScreen5,settings1,settings2,settings3,settings4,settings5,frequency1,frequency2,frequency3,car1,car2,car3;
 
     private Frequency frequencies;
 
@@ -140,6 +140,15 @@ public class GameLogic extends GameCanvas {
 
          URL frequencyLow = this.getClass().getResource("/images/frequency3.png");
          frequency3 = ImageIO.read(frequencyLow);
+
+         URL carGreen = this.getClass().getResource("/images/car1.png");
+         car1 = ImageIO.read(carGreen);
+
+         URL carRed = this.getClass().getResource("/images/car4.png");
+         car2 = ImageIO.read(carRed);
+
+         URL carYellow = this.getClass().getResource("/images/car5.png");
+         car3 = ImageIO.read(carYellow);
 
      } catch(IOException ex){
          Logger.getLogger(GameLogic.class.getName()).log(Level.SEVERE, null, ex);
@@ -299,6 +308,18 @@ public class GameLogic extends GameCanvas {
             case CAR1:
                 car.Draw(g2d);
                 break;
+            case GREEN:
+                g2d.setColor(Color.white);
+                g2d.drawImage(car1,0,0,frameWidth,frameHeight,null);
+                break;
+            case RED:
+                g2d.setColor(Color.white);
+                g2d.drawImage(car2,0,0,frameWidth,frameHeight,null);
+                break;
+            case YELLOW:
+                g2d.setColor(Color.white);
+                g2d.drawImage(car3,0,0,frameWidth,frameHeight,null);
+                break;
             case HELP:
                 g2d.setColor(Color.white);
                 g2d.drawImage(settings3,0,0,frameWidth,frameHeight,null);
@@ -350,7 +371,6 @@ public class GameLogic extends GameCanvas {
             case MENU:
              if (xVal >= 121 && xVal <= 384 && yVal >= 119 && yVal <= 174) {
                 gameState = GameState.RACE;
-                 System.out.println("No!");
              }
              else if (xVal >= 121 && xVal <= 384 && yVal >= 200 && yVal <= 254 ) {
                  gameState = GameState.MULTIPLAYER;
@@ -395,7 +415,15 @@ public class GameLogic extends GameCanvas {
                 }
                 break;
             case CAR1:
-
+                if(xVal >= 43 && xVal <= 158 && yVal >= 154 && yVal <= 291){
+                    gameState = GameState.GREEN;
+                }
+                else if(xVal >= 317 && xVal <= 453 && yVal >= 149 && yVal <= 293){
+                    gameState = GameState.RED;
+                }
+                else if(xVal >= 174 && xVal <= 314 && yVal >= 360 && yVal <= 508){
+                    gameState = GameState.YELLOW;
+                }
                 break;
             case HELP1:
                 if(xVal >= 122 && xVal <= 375 && yVal >= 534 && yVal <= 595){
@@ -450,6 +478,15 @@ public class GameLogic extends GameCanvas {
                 gameState = GameState.SETTINGS1;
                 break;
             case LOW1:
+                gameState = GameState.SETTINGS1;
+                break;
+            case GREEN:
+                gameState = GameState.SETTINGS1;
+                break;
+            case RED:
+                gameState = GameState.SETTINGS1;
+                break;
+            case YELLOW:
                 gameState = GameState.SETTINGS1;
                 break;
         }
