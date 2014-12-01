@@ -69,12 +69,13 @@ abstract class GameCanvas extends JPanel implements KeyListener, MouseListener {
     @Override
     public void mousePressed(MouseEvent event){
     }
+
     @Override
     public void mouseReleased(MouseEvent event){
     }
 
+    @Override
     public void mouseClicked(MouseEvent event){
-        System.out.println("CLICKED IN GAMECANVAS");
     }
 
     @Override

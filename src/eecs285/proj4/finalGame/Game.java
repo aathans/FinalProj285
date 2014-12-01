@@ -1,8 +1,5 @@
 package eecs285.proj4.finalGame;
 
-
-import sun.audio.AudioPlayer;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -10,8 +7,7 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import sun.audio.*;
-import java.io.FileInputStream;
+
 
 /**
  * Created by Alex on 11/17/14.
@@ -53,7 +49,7 @@ public class Game {
     public Game(final boolean inIsMultiplayer){
         GameLogic.gameState = GameLogic.GameState.LOADING;
         isMultiplayer = inIsMultiplayer;
-        System.out.println("is multiplayer" + isMultiplayer);
+
         Thread initializeGame = new Thread(){
             @Override
             public void run() {
@@ -162,20 +158,20 @@ public class Game {
 
         playerScore = playerOne.getScore();
 
-        boolean crashed = collidedWithObject();
+        playerCrashed = collidedWithObject();
 
         if(isMultiplayer){
             String pScore = String.valueOf(playerScore);
             p.sendUpdate(pScore);
             opponentScore = p.getOpponentScore();
             opponentCrashed = p.isOpponentFinished();
-            if(crashed){
+            if(playerCrashed){
                 p.sendUpdate("-1");
                 lineSpeed = 0;
             }
         }
 
-        return crashed;
+        return playerCrashed;
     }
 
     private boolean collidedWithObject(){
@@ -255,6 +251,7 @@ public class Game {
             g2d.setColor(Color.red);
             labelY += 20;
             g2d.drawString("Opponent: " + opponentScore, 5, labelY);
+            g2d.setColor(Color.white);
         }
     }
 
@@ -270,7 +267,9 @@ public class Game {
         g2d.drawString("Score: " + playerScore, 5, labelY);
         if (isMultiplayer){
             labelY += 20;
+            g2d.setColor(Color.red);
             g2d.drawString("Opponent: " + opponentScore, 5, labelY);
+            g2d.setColor(Color.white);
             if(playerScore > opponentScore){
                 g2d.drawString("YOU WON!", GameLogic.frameWidth/2 - 30, GameLogic.frameHeight/2);
             }else if(playerScore < opponentScore){
@@ -289,6 +288,7 @@ public class Game {
         Draw(g2d);
         playerOne.reset();
         lineSpeed = 0;
+
         if(!isMultiplayer) {
             g2d.drawString("CRASHED", GameLogic.frameWidth / 2 - 30, GameLogic.frameHeight / 2 + 50);
             g2d.drawString("Press any key to restart", GameLogic.frameWidth / 2 - 75, GameLogic.frameHeight / 2 + 30);

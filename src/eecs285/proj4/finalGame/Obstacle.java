@@ -46,10 +46,10 @@ public class Obstacle {
 
     public boolean checkForCollision(int inX, int inY, int inWidth, int inHeight){
 
-        if((inX + inWidth < xPos) || (xPos + obstacleWidth - 5 < inX)) {
+        if((inX + inWidth - 10 < xPos) || (xPos + obstacleWidth - 10 < inX)) {
             return false;
         }
-        if((inY + inHeight < yPos + 10) || (yPos + obstacleHeight - 15 < inY)) {
+        if((inY + inHeight - 10 < yPos) || (yPos + obstacleHeight - 10 < inY)) {
             return false;
         }
 

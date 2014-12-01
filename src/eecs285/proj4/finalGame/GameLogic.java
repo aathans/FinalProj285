@@ -137,7 +137,6 @@ public class GameLogic extends GameCanvas {
                     break;
                 case MULTIPLAYER:
                     repaint();
-                    isMultiplayer = true;
                     newGame();
                     break;
                 case PLAYING:
@@ -172,17 +171,16 @@ public class GameLogic extends GameCanvas {
                     }catch (InterruptedException ex){
 
                     }
-                    gameState = GameState.MENU;
+                    if(isMultiplayer) {
+                        gameState = GameState.MENU;
+                    }
                     break;
                 case CRASHED:
                     if(isMultiplayer) {
                         if(game.opponentHasCrashed()){
-                            System.out.println("detected opp crash");
-                            restart();
                             gameState = GameState.ENDED;
                         }
-                    }else {
-                        restart();
+                    }else{
                         gameState = GameState.ENDED;
                     }
                     break;
@@ -258,7 +256,6 @@ public class GameLogic extends GameCanvas {
                 break;
             case ENDED:
                 game.DrawEnd(g2d);
-                g2d.drawString("ENDED", 100, 100);
                 break;
             case CRASHED:
                 game.DrawCrashed(g2d);
@@ -273,15 +270,14 @@ public class GameLogic extends GameCanvas {
         int xVal = (int) b.getX();
         int yVal = (int) b.getY();
 
-        System.out.println(xVal);
-        System.out.println(yVal);
-
         switch(gameState) {
             case MENU:
              if (xVal >= 121 && xVal <= 384 && yVal >= 119 && yVal <= 174) {
-                gameState = GameState.RACE;
+                 isMultiplayer = false;
+                 gameState = GameState.RACE;
              }
              else if (xVal >= 121 && xVal <= 384 && yVal >= 200 && yVal <= 254 ) {
+                 isMultiplayer = true;
                  gameState = GameState.MULTIPLAYER;
              }
              else if (xVal >= 121 && xVal <= 384 && yVal >= 286 && yVal <= 341) {
@@ -374,13 +370,12 @@ public class GameLogic extends GameCanvas {
                 }
                 break;
             case ENDED:
-                try {
-                    Thread.sleep(1000);
-                }catch(InterruptedException e){
-
-                }
                 if(!isMultiplayer) {
-                    restart();
+                    if(event.getKeyCode() == KeyEvent.VK_Q){
+                        gameState = GameState.MENU;
+                    }else {
+                        restart();
+                    }
                 }
                 break;
         }
