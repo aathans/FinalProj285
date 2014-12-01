@@ -297,7 +297,7 @@ public class GameLogic extends GameCanvas {
                 g2d.drawImage(settings2,0,0,frameWidth,frameHeight,null);
                 break;
             case CAR1:
-
+                car.Draw(g2d);
                 break;
             case HELP:
                 g2d.setColor(Color.white);
