@@ -11,11 +11,11 @@ public class Database
 {
 
   // JDBC database URL
-  static final String DB_URL = "jdbc:mysql://sql2.freemysqlhosting.net/sql259966";
+  static final String DB_URL = "jdbc:mysql://sql5.freemysqlhosting.net/sql560740";
 
   //  Database credentials
-  static final String USER = "sql259966";
-  static final String PASS = "cL2!hY1%";
+  static final String USER = "sql560740";
+  static final String PASS = "nI9!gL2%";
 
   static Connection conn;
 
